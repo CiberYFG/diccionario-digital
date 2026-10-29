@@ -213,6 +213,17 @@
   @media (prefers-reduced-motion: no-preference) {
     details { transition: border-color .2s; }
   }
+  .cats { display: flex; flex-wrap: wrap; justify-content: center; gap: .6rem; }
+  .cats .boton { padding: .55rem 1rem; }
+  .rel { display: flex; flex-wrap: wrap; gap: .5rem; }
+  .rel .chip { padding: .35rem .9rem; font-size: .95rem; border-width: 2px; }
+  .titulo-lista { font-size: 1.2rem; margin: 0 0 1rem; color: var(--acento-oscuro); }
+  .proponer { text-align: center; margin-top: 2rem; }
+  dialog { border: 3px solid var(--acento); border-radius: 16px; background: var(--superficie); color: var(--texto); max-width: 30rem; width: 92%; }
+  dialog::backdrop { background: rgba(0, 0, 0, .5); }
+  dialog label { display: block; font-weight: bold; margin: .8rem 0 .3rem; }
+  dialog input, dialog textarea { width: 100%; padding: .7rem; border: 2px solid var(--acento); border-radius: 10px; background: var(--fondo); color: var(--texto); font: inherit; }
+  .acciones { display: flex; flex-wrap: wrap; gap: .6rem; margin-top: 1rem; }
   [hidden] { display: none !important; }
 </style>
 </head>
@@ -221,14 +232,14 @@
 
 <header>
   <h1>El Diccionario de la Era Digital para Todos</h1>
-  <p class="intro">Las palabras de la tecnología, explicadas con calma y con ejemplos de la vida diaria. Escriba una palabra en el buscador o toque una de la lista.</p>
+  <p class="intro">Las palabras de la tecnología, explicadas con calma y con ejemplos de la vida diaria. Escriba una palabra, elija una categoría o toque una palabra del momento. No importa si se equivoca al escribirla: el diccionario le ayudará.</p>
 </header>
 
 <div class="barra" role="search">
   <div class="barra-interna">
     <label class="buscar" for="buscador">¿Qué palabra quiere conocer?</label>
     <div class="campo">
-      <input type="search" id="buscador" placeholder="Por ejemplo: bizum, spoiler, wifi…" autocomplete="off" autocapitalize="off" spellcheck="false">
+      <input type="search" id="buscador" placeholder="Por ejemplo: afk, bizum, shipear…" autocomplete="off" autocapitalize="off" spellcheck="false">
       <button type="button" class="boton" id="borrar">Borrar</button>
     </div>
     <div class="utiles">
@@ -243,18 +254,41 @@
 </div>
 
 <main id="resultados" tabindex="-1">
+  <div id="inicio">
   <section class="tendencias" id="tendencias" aria-labelledby="t-titulo">
     <h2 id="t-titulo">Palabras del momento</h2>
     <p>Toque una palabra para ver qué significa.</p>
     <div id="chips"></div>
     <button type="button" class="boton" id="otras">Ver otras palabras</button>
   </section>
+    <section class="tendencias" aria-labelledby="c-titulo">
+      <h2 id="c-titulo">Explorar por categorías</h2>
+      <div class="cats" id="cats"></div>
+    </section>
+  </div>
+  <h2 class="titulo-lista" id="titulo-lista" hidden></h2>
   <ul class="lista" id="lista" hidden></ul>
   <div class="vacio" id="vacio" hidden>
     <p><strong>No encontramos esa palabra.</strong></p>
-    <p>Pruebe con otra o revise cómo está escrita. También puede pulsar «Borrar» para ver todas las palabras.</p>
+    <p>Revise cómo está escrita o pruebe con otra. Si no la conoce, cuéntenoslo y la explicamos.</p>
+    <button type="button" class="boton abrir">¿Qué palabra no entiendes?</button>
   </div>
+  <div class="proponer"><button type="button" class="boton abrir">¿Qué palabra no entiendes?</button></div>
 </main>
+<dialog id="dialogo" aria-labelledby="d-t">
+  <form id="form">
+    <h2 id="d-t">¿Qué palabra no entiendes?</h2>
+    <label for="f-palabra">La palabra</label>
+    <input id="f-palabra" name="palabra" required autocomplete="off">
+    <label for="f-nota">¿Dónde la viste? (opcional)</label>
+    <textarea id="f-nota" name="nota" rows="3"></textarea>
+    <p id="gracias" role="status" hidden><strong>¡Gracias!</strong> Hemos anotado su propuesta.</p>
+    <div class="acciones">
+      <button type="submit" class="boton">Enviar</button>
+      <button type="button" class="boton" id="cerrar">Cerrar</button>
+    </div>
+  </form>
+</dialog>
 
 <footer>
   <p class="contacto">Cualquier duda o sugerencia mande un correo electrónico a: <strong>[Correo en desarrollo]</strong></p>
@@ -818,91 +852,227 @@
     }
   ];
 
+  const CORREO = ""; // Cuando tenga su correo, escríbalo aquí entre comillas y las propuestas se enviarán por email.
+  const CATS = {
+    red: "Redes sociales y mensajes", vid: "Videojuegos", ia: "Inteligencia artificial",
+    din: "Compras y dinero", seg: "Seguridad en internet", mov: "Móviles, ordenadores e internet",
+    casa: "Casa y hogar", jerga: "Jerga joven y de la calle", otros: "Series, ocio y otros"
+  };
+  const DONDE = {
+    red: "En redes sociales y aplicaciones de mensajes, como WhatsApp, Instagram o TikTok.",
+    vid: "En videojuegos, partidas por internet y chats de jugadores.",
+    ia: "En asistentes de voz, buscadores, aplicaciones del móvil y programas que responden preguntas.",
+    din: "En el banco, en las tiendas online y al pagar con el móvil.",
+    seg: "En el correo, los SMS, las llamadas, las páginas web y el móvil.",
+    mov: "En casa, en el móvil, en el ordenador y en la conexión a internet.",
+    casa: "En el hogar: cocina, salón, puerta de entrada y aparatos conectados.",
+    jerga: "En conversaciones del día a día, redes sociales y entre jóvenes.",
+    otros: "En series, cine, ocio y la vida diaria."
+  };
+  const OVER = { "Joystick": "vid" };
+  const NUEVAS = [
+    ["Inteligencia artificial","ia","Programa de ordenador capaz de hacer cosas que antes solo hacían las personas: entender lo que decimos, escribir textos o reconocer fotos.","«Le pregunté a una inteligencia artificial cómo hacer arroz con leche y me dio la receta.»","Chatbot,Asistente virtual,Algoritmo"],
+    ["Chatbot","ia","Programa con el que se conversa por escrito, como si fuera una persona, para resolver dudas o pedir ayuda.","«El chatbot del banco me explicó cómo pedir cita sin llamar por teléfono.»","Inteligencia artificial,Prompt,App"],
+    ["Asistente virtual","ia","Ayudante que funciona con la voz: se le pide poner música, la hora o una alarma y obedece.","«Dije en voz alta «pon la radio» y el asistente virtual la encendió.»","Altavoz inteligente,Chatbot,Inteligencia artificial"],
+    ["Prompt","ia","Frase o pregunta que se escribe a una inteligencia artificial para pedirle algo.","«Mi prompt fue: «explícame qué es el wifi con palabras sencillas».»","Chatbot,IA generativa,Inteligencia artificial"],
+    ["IA generativa","ia","Inteligencia artificial que crea cosas nuevas a partir de una petición: textos, imágenes, música o vídeos.","«Con una IA generativa hice un dibujo de mi gato vestido de astronauta.»","Prompt,Deepfake,Chatbot"],
+    ["Deepfake","ia","Vídeo, foto o audio falso, hecho con inteligencia artificial, que hace creer que alguien dijo o hizo algo que nunca hizo.","«Circuló un deepfake de un famoso pidiendo dinero, pero era un engaño.»","Fake news,Phishing,IA generativa"],
+    ["Reconocimiento facial","ia","Sistema que identifica a una persona mirando su cara con una cámara. Sirve, por ejemplo, para desbloquear el móvil.","«Mi móvil se desbloquea con reconocimiento facial, sin teclear nada.»","Huella dactilar,Contraseña,Pantalla táctil"],
+    ["Traductor automático","ia","Herramienta que traduce textos o conversaciones de un idioma a otro al instante.","«Con el traductor automático entendí el menú del restaurante en Italia.»","App,Chatbot,Inteligencia artificial"],
+    ["Alucinación (IA)","ia","Error de una inteligencia artificial que se inventa un dato y lo cuenta con total seguridad. Conviene comprobar lo que dice.","«El chatbot me dio una fecha equivocada con mucha seguridad: era una alucinación.»","Chatbot,Fake news,Prompt"],
+    ["WhatsApp","red","Aplicación para enviar mensajes, fotos y audios, y hacer llamadas desde el móvil usando internet.","«Mando las fotos de la comida familiar por WhatsApp.»","Grupo de chat,Sticker,Videollamada"],
+    ["Grupo de chat","red","Conversación en la que participan varias personas y todas ven los mismos mensajes.","«Tenemos un grupo de chat de la familia para organizar las comidas.»","WhatsApp,Emoji,Sticker"],
+    ["Emoji","red","Dibujito pequeño, como una carita sonriente, que se añade a un mensaje para expresar cómo uno se siente.","«Me respondió con un emoji de pulgar arriba para decir que sí.»","Sticker,WhatsApp,Meme"],
+    ["Story (Historia)","red","Foto o vídeo corto que se publica y desaparece solo a las 24 horas.","«Subió una historia del paseo y al día siguiente ya no estaba.»","Reel,Post,Filtro"],
+    ["Reel","red","Vídeo corto y vertical, con música, que se publica en Instagram.","«Vi un reel de recetas de menos de un minuto.»","Story (Historia),Viral,Post"],
+    ["Seguidor","red","Persona que ha decidido ver todo lo que publica otra cuenta en una red social.","«Mi nieta ya tiene cien seguidores en su perfil.»","Influencer,Like,Post"],
+    ["Like","red","Pulsación en el corazón o el pulgar que significa «me gusta» en una publicación.","«Le di un like a la foto de mi sobrino.»","Seguidor,Post,Hashtag"],
+    ["Fake news","red","Noticia falsa que parece verdadera. Conviene comprobarla antes de compartirla.","«Me llegó por WhatsApp una fake news sobre un premio; era mentira.»","Deepfake,Clickbait,Phishing"],
+    ["Tarjeta contactless","din","Tarjeta que se paga acercándola al datáfono, sin meterla ni teclear el número secreto en compras pequeñas.","«Pagué el café con la tarjeta contactless en un segundo.»","Pago móvil,PIN,Bizum"],
+    ["Pago móvil","din","Pagar acercando el teléfono al datáfono, en lugar de usar la tarjeta.","«Pagué el pan con el móvil, sin sacar la cartera.»","Tarjeta contactless,Bizum,App"],
+    ["PIN","din","Número secreto de cuatro cifras que protege una tarjeta o un móvil. No se debe compartir con nadie.","«Nunca le digo mi PIN a nadie, ni siquiera por teléfono.»","Contraseña,Tarjeta contactless,Autenticación en dos pasos (2FA)"],
+    ["Compra online","din","Comprar algo por internet y recibirlo en casa, sin ir a la tienda.","«Hice la compra online y me trajeron todo a la puerta.»","Reseña,Pago móvil,Phishing"],
+    ["Reseña","din","Opinión que dejan los clientes sobre un producto o un lugar. Ayuda a decidir si merece la pena.","«Antes de comprar la tostadora leí las reseñas.»","Compra online,Influencer,Like"],
+    ["Criptomoneda","din","Dinero digital que no es de ningún banco y solo existe en internet. Su valor sube y baja mucho.","«Mi vecino compró una criptomoneda y su precio cambió en pocos días.»","Bizum,Pago móvil,Phishing"],
+    ["Banca online","din","Servicio del banco para ver el saldo y hacer pagos desde una web o una app, sin ir a la oficina.","«Consulto mi saldo en la banca online todas las mañanas.»","App,Autenticación en dos pasos (2FA),Phishing"],
+    ["Suscripción","din","Pago periódico, cada mes o cada año, por usar un servicio, como una plataforma de series.","«Cancelé la suscripción que ya no usaba.»","Streaming,Banca online,App"],
+    ["Contraseña","seg","Clave secreta, de letras, números y símbolos, para entrar en una cuenta. Cuanto más larga, mejor.","«Cambié mi contraseña por una frase larga que solo yo recuerdo.»","PIN,Autenticación en dos pasos (2FA),Phishing"],
+    ["Huella dactilar","seg","Marca única de un dedo que sirve para desbloquear el móvil o confirmar un pago.","«Entro en la app del banco con la huella dactilar.»","Contraseña,Reconocimiento facial,PIN"],
+    ["Copia de seguridad","seg","Duplicado de sus fotos y archivos guardado en otro sitio, por si se pierde o se rompe el móvil.","«Hice una copia de seguridad antes de cambiar de móvil.»","Nube,Disco SSD,Ransomware"],
+    ["Suplantación de identidad","seg","Estafa en la que alguien se hace pasar por usted o por otra persona para engañar a los demás.","«Un desconocido creó un perfil con mi foto para pedir dinero a mis amigos.»","Phishing,Smishing,Vishing"],
+    ["Wifi público","seg","Red de internet gratuita de bares o aeropuertos. Es mejor no usar el banco en ella.","«Esperé a usar mis datos móviles para pagar, no el wifi del aeropuerto.»","VPN,Wifi,Banca online"],
+    ["Actualización","mov","Mejora que se instala en un aparato o una app para arreglar fallos y protegerlo. Conviene instalarla.","«El móvil me avisó de una actualización de seguridad y la instalé.»","App,Software,Malware"],
+    ["Datos móviles","mov","Internet de la tarifa del móvil, que se gasta cuando no hay wifi.","«Me quedé sin datos móviles a final de mes.»","Wifi,Router,App"],
+    ["Notificación","mov","Aviso que aparece en la pantalla del móvil cuando llega un mensaje o pasa algo en una app.","«Me llegó una notificación de que mi pedido estaba en camino.»","App,WhatsApp,Actualización"],
+    ["Captura de pantalla","mov","Foto de lo que se ve en la pantalla del móvil o del ordenador en ese momento.","«Hice una captura de pantalla del billete para tenerlo a mano.»","Pantalla táctil,App,Código QR"],
+    ["Modo avión","mov","Ajuste del móvil que corta las llamadas y el internet, por ejemplo durante un vuelo.","«Puse el móvil en modo avión al despegar.»","Datos móviles,Wifi,Bluetooth"],
+    ["Domótica","casa","Aparatos que hacen la casa más cómoda y automática, como luces o persianas que se manejan desde el móvil.","«Con la domótica enciendo la calefacción antes de llegar a casa.»","Enchufe inteligente,Altavoz inteligente,Smart TV"],
+    ["Enchufe inteligente","casa","Enchufe que se enciende y se apaga desde el móvil.","«Apagué la plancha desde el móvil con un enchufe inteligente.»","Domótica,App,Wifi"],
+    ["Altavoz inteligente","casa","Altavoz al que se le habla para poner música, preguntar el tiempo o apagar la luz.","«Le pedí a mi altavoz inteligente que me recordase tomar la medicina.»","Asistente virtual,Domótica,Wifi"],
+    ["Robot aspirador","casa","Aspiradora redonda que recorre la casa sola y limpia el suelo.","«El robot aspirador limpia el salón mientras yo salgo a caminar.»","Domótica,App,Wifi"],
+    ["Streamer","vid","Persona que juega o charla en directo por internet mientras otros la ven.","«Mi nieto ve a un streamer que juega y cuenta chistes.»","Directo (Streaming),Hype,Influencer"],
+    ["Postureo","jerga","Presumir o aparentar algo solo para que lo vean los demás, sobre todo en redes.","«Esa foto en un coche de lujo alquilado es puro postureo.»","Influencer,Filtro,Flexear"],
+    ["Quedada","jerga","Encuentro acordado con amigos o con gente de internet para verse en persona.","«Hicimos una quedada del grupo de senderismo en el parque.»","Grupo de chat,WhatsApp,Random"],
+    ["Podcast","otros","Programa de audio, como una radio, que se escucha cuando uno quiere desde el móvil.","«Escucho un podcast de historia mientras cocino.»","Streaming,App,Suscripción"]
+  ];
+
   const lista = document.getElementById("lista");
   const vacio = document.getElementById("vacio");
   const buscador = document.getElementById("buscador");
   const contador = document.getElementById("contador");
-
-  const normalizar = (t) => t.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase().trim();
-
-  const ordenados = terminos.slice().sort((a, b) => a.palabra.localeCompare(b.palabra, "es"));
-
-  function crearTarjeta(t) {
-    const li = document.createElement("li");
-    const det = document.createElement("details");
-
-    const sum = document.createElement("summary");
-    const nombre = document.createElement("span");
-    nombre.className = "palabra";
-    nombre.textContent = t.palabra;
-    const tema = document.createElement("span");
-    tema.className = "tema";
-    tema.textContent = t.tema;
-    nombre.appendChild(tema);
-    const mas = document.createElement("span");
-    mas.className = "mas";
-    mas.setAttribute("aria-hidden", "true");
-    sum.append(nombre, mas);
-
-    const cont = document.createElement("div");
-    cont.className = "contenido";
-    const h1 = document.createElement("h3");
-    h1.textContent = "Qué significa";
-    const p = document.createElement("p");
-    p.textContent = t.definicion;
-    const h2 = document.createElement("h3");
-    h2.textContent = "Ejemplo de uso";
-    const ej = document.createElement("p");
-    ej.className = "ejemplo";
-    ej.textContent = t.ejemplo;
-    cont.append(h1, p, h2, ej);
-
-    det.append(sum, cont);
-    li.appendChild(det);
-    li._texto = normalizar(t.palabra + " " + t.tema + " " + t.definicion + " " + t.ejemplo);
-    li._palabra = normalizar(t.palabra);
-    return li;
-  }
-
-  const tarjetas = ordenados.map(crearTarjeta);
-  tarjetas.forEach((li) => lista.appendChild(li));
-
+  const inicio = document.getElementById("inicio");
   const tendencias = document.getElementById("tendencias");
   const chips = document.getElementById("chips");
-  let actuales = [];
+  const titulo = document.getElementById("titulo-lista");
 
-  function filtrar() {
-    const q = normalizar(buscador.value);
-    const buscando = q !== "";
-    let visibles = 0;
-    tarjetas.forEach((li) => {
-      const coincide = buscando && li._texto.includes(q);
-      li.hidden = !coincide;
-      if (coincide) visibles++;
-    });
-    tarjetas.forEach((li) => {
-      li.firstChild.open = !li.hidden && (li._palabra.includes(q) || visibles === 1);
-    });
-    lista.hidden = !buscando || visibles === 0;
-    vacio.hidden = !buscando || visibles !== 0;
-    tendencias.hidden = buscando;
-    if (!buscando) {
-      contador.textContent = "Escriba una palabra o elija una del momento.";
-    } else if (visibles === 0) {
-      contador.textContent = "Ninguna palabra encontrada.";
-    } else {
-      contador.textContent = visibles === 1 ? "1 palabra encontrada." : visibles + " palabras encontradas.";
+  const normalizar = (t) => t.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase().trim();
+  // «Clave» para admitir errores comunes: sin tildes, sin letras dobles, h muda, b/v y c/k iguales (shipear = shippear)
+  const clave = (s) => normalizar(s).replace(/[^a-z0-9]/g, "").replace(/ph/g, "f").replace(/k/g, "c").replace(/v/g, "b").replace(/h/g, "").replace(/(.)\1+/g, "$1");
+  function lev(a, b) {
+    let prev = Array.from({ length: b.length + 1 }, (_, j) => j);
+    for (let i = 1; i <= a.length; i++) {
+      const cur = [i];
+      for (let j = 1; j <= b.length; j++) {
+        cur[j] = Math.min(prev[j] + 1, cur[j - 1] + 1, prev[j - 1] + (a[i - 1] === b[j - 1] ? 0 : 1));
+      }
+      prev = cur;
     }
+    return prev[b.length];
+  }
+  function catDe(t) {
+    const x = normalizar(t.tema);
+    if (x.includes("jerga")) return "jerga";
+    if (x.includes("videojuego")) return "vid";
+    if (x.includes("dinero")) return "din";
+    if (x.includes("seguridad")) return "seg";
+    if (x.includes("redes")) return "red";
+    if (x.includes("series")) return "otros";
+    return "mov";
   }
 
-  buscador.addEventListener("input", filtrar);
+  // Se quitan «Era» y «Comunidad» por ser demasiado generales; el resto se mantiene
+  const todos = terminos
+    .filter((t) => t.palabra !== "Era" && t.palabra !== "Comunidad")
+    .map((t) => ({ ...t, cat: OVER[t.palabra] || catDe(t) }))
+    .concat(NUEVAS.map(([palabra, cat, definicion, ejemplo, rel]) => ({ palabra, cat, definicion, ejemplo, rel: rel.split(",") })))
+    .sort((a, b) => a.palabra.localeCompare(b.palabra, "es"));
+
+  todos.forEach((t) => {
+    t.claves = [t.palabra].concat(t.palabra.split(/[\/()]/)).map(clave).filter(Boolean);
+  });
+  todos.forEach((t) => {
+    if (!t.rel) {
+      const g = todos.filter((x) => x.cat === t.cat), i = g.indexOf(t);
+      t.rel = [1, 2, 3].map((k) => g[(i + k) % g.length].palabra).filter((p) => p !== t.palabra);
+    }
+  });
+
+  const el = (tag, cls, txt) => {
+    const e = document.createElement(tag);
+    if (cls) e.className = cls;
+    if (txt) e.textContent = txt;
+    return e;
+  };
+
+  function crearTarjeta(t) {
+    const li = el("li"), det = el("details"), sum = el("summary");
+    const nombre = el("span", "palabra", t.palabra);
+    nombre.append(el("span", "tema", CATS[t.cat]));
+    const mas = el("span", "mas");
+    mas.setAttribute("aria-hidden", "true");
+    sum.append(nombre, mas);
+    const c = el("div", "contenido");
+    c.append(
+      el("h3", 0, "Qué significa"), el("p", 0, t.definicion),
+      el("h3", 0, "Ejemplo real"), el("p", "ejemplo", t.ejemplo),
+      el("h3", 0, "Dónde se utiliza"), el("p", 0, t.uso || DONDE[t.cat]),
+      el("h3", 0, "Palabras relacionadas")
+    );
+    const r = el("div", "rel");
+    t.rel.forEach((p) => {
+      const b = el("button", "chip", p);
+      b.type = "button";
+      b.addEventListener("click", () => ir(p));
+      r.append(b);
+    });
+    c.append(r);
+    det.append(sum, c);
+    li.append(det);
+    t.li = li;
+    return li;
+  }
+  todos.forEach((t) => lista.append(crearTarjeta(t)));
+
+  let cat = null;
+  function render() {
+    const bruto = buscador.value.trim(), q = clave(bruto), qn = normalizar(bruto);
+    let res = [];
+    if (bruto) {
+      todos.forEach((t) => {
+        let s = 9;
+        t.claves.forEach((k) => {
+          if (k === q) s = 0;
+          else if (k.startsWith(q)) s = Math.min(s, 1);
+          else if (q.length >= 3 && k.includes(q)) s = Math.min(s, 2);
+          else if (q.length >= 4 && lev(k, q) <= (q.length >= 7 ? 2 : 1)) s = Math.min(s, 3);
+        });
+        if (s === 9 && qn.length >= 4 && normalizar(CATS[t.cat]).includes(qn)) s = 4;
+        if (s < 9) res.push([s, t]);
+      });
+      res.sort((a, b) => a[0] - b[0] || a[1].palabra.localeCompare(b[1].palabra, "es"));
+      res = res.map((x) => x[1]);
+    } else if (cat) {
+      res = todos.filter((t) => cat === "todas" || t.cat === cat);
+    }
+    const exacto = bruto && res.length && res[0].claves.includes(q);
+    todos.forEach((t) => {
+      t.li.hidden = !res.includes(t);
+      t.li.firstChild.open = t === res[0] && (res.length === 1 || !!exacto);
+    });
+    res.forEach((t) => lista.append(t.li));
+    const activo = bruto || cat;
+    inicio.hidden = !!activo;
+    lista.hidden = !res.length;
+    vacio.hidden = !(bruto && !res.length);
+    titulo.hidden = !(cat && !bruto);
+    if (cat) titulo.textContent = cat === "todas" ? "Todas las palabras, de la A a la Z" : "Categoría: " + CATS[cat];
+    contador.textContent = !activo ? "Escriba una palabra o elija una categoría."
+      : !res.length ? "Ninguna palabra encontrada."
+      : res.length === 1 ? "1 palabra encontrada." : res.length + " palabras encontradas.";
+  }
+  function enfocar() {
+    const s = lista.querySelector("li:not([hidden]) summary");
+    if (s) { s.scrollIntoView({ block: "center" }); s.focus({ preventScroll: true }); }
+  }
+  function ir(p) {
+    buscador.value = p;
+    cat = null;
+    render();
+    enfocar();
+  }
+
+  buscador.addEventListener("input", () => { cat = null; render(); });
   document.getElementById("borrar").addEventListener("click", () => {
     buscador.value = "";
-    filtrar();
+    cat = null;
+    render();
     buscador.focus();
   });
 
-  let tam = 18; // Ajustado al nuevo tamaño base
+  const cats = document.getElementById("cats");
+  Object.keys(CATS).concat("todas").forEach((k) => {
+    const b = el("button", "boton", k === "todas" ? "Todas (A–Z)" : CATS[k]);
+    b.type = "button";
+    b.addEventListener("click", () => {
+      buscador.value = "";
+      cat = k;
+      render();
+      titulo.scrollIntoView({ block: "start" });
+    });
+    cats.append(b);
+  });
+
+  let tam = 18;
   const raiz = document.documentElement;
   function cambiarTam(delta) {
     tam = Math.min(28, Math.max(14, tam + delta));
@@ -911,40 +1081,53 @@
   document.getElementById("mas").addEventListener("click", () => cambiarTam(2));
   document.getElementById("menos").addEventListener("click", () => cambiarTam(-2));
 
+  let actuales = [];
   function mostrarTendencias() {
-    const nuevas = ordenados
-      .filter((t) => !actuales.includes(t.palabra))
-      .sort(() => Math.random() - 0.5)
-      .slice(0, 3);
+    const nuevas = todos.filter((t) => !actuales.includes(t.palabra)).sort(() => Math.random() - 0.5).slice(0, 3);
     actuales = nuevas.map((t) => t.palabra);
     chips.replaceChildren(...nuevas.map((t) => {
-      const b = document.createElement("button");
+      const b = el("button", "chip", t.palabra);
       b.type = "button";
-      b.className = "chip";
-      b.textContent = t.palabra;
-      b.addEventListener("click", () => {
-        buscador.value = t.palabra;
-        filtrar();
-        const sum = tarjetas[ordenados.indexOf(t)].querySelector("summary");
-        sum.scrollIntoView({ block: "center" });
-        sum.focus({ preventScroll: true });
-      });
+      b.addEventListener("click", () => ir(t.palabra));
       return b;
     }));
   }
-
   let pausa = false;
   ["mouseenter", "focusin"].forEach((e) => tendencias.addEventListener(e, () => { pausa = true; }));
   ["mouseleave", "focusout"].forEach((e) => tendencias.addEventListener(e, () => { pausa = false; }));
   document.getElementById("otras").addEventListener("click", mostrarTendencias);
   if (!window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
-    setInterval(() => {
-      if (!pausa && !tendencias.hidden && !document.hidden) mostrarTendencias();
-    }, 12000);
+    setInterval(() => { if (!pausa && !inicio.hidden && !document.hidden) mostrarTendencias(); }, 12000);
   }
 
+  // ¿Qué palabra no entiendes? / proponer palabras
+  const dlg = document.getElementById("dialogo"), form = document.getElementById("form"), gracias = document.getElementById("gracias");
+  document.querySelectorAll(".abrir").forEach((b) => b.addEventListener("click", () => {
+    form.reset();
+    form.palabra.value = buscador.value.trim();
+    gracias.hidden = true;
+    dlg.showModal();
+    form.palabra.focus();
+  }));
+  document.getElementById("cerrar").addEventListener("click", () => dlg.close());
+  form.addEventListener("submit", (e) => {
+    e.preventDefault();
+    const p = { palabra: form.palabra.value.trim(), nota: form.nota.value.trim(), fecha: new Date().toISOString() };
+    try {
+      const g = JSON.parse(localStorage.getItem("propuestas") || "[]");
+      g.push(p);
+      localStorage.setItem("propuestas", JSON.stringify(g));
+    } catch (_) {}
+    if (CORREO) location.href = "mailto:" + CORREO + "?subject=" + encodeURIComponent("Palabra nueva: " + p.palabra) + "&body=" + encodeURIComponent(p.nota);
+    form.reset();
+    gracias.hidden = false;
+  });
+
   mostrarTendencias();
-  filtrar();
+  render();
+</script>
+</body>
+</html>
 </script>
 </body>
 </html>
