@@ -8,7 +8,7 @@
 <style>
   :root {
     --fondo: #f5f8ff;
-    --barra: rgba(245, 248, 255, .92);
+    --barra: rgba(245, 248, 255, .55);
     --punto: rgba(236, 128, 150, .22);
     --punto2: rgba(10, 92, 143, .16);
     --superficie: #ffffff;
@@ -22,8 +22,8 @@
     --foco: #c2410c;
     --tam-base: 18px; /* Reducido ligeramente de tamaño inicial */
   }
-  @media (prefers-color-scheme: dark) {
-    :root {
+  @media all {
+    :root[data-tema="oscuro"] {
       --fondo: #10161f;
       --barra: rgba(16, 22, 31, .94);
       --punto: rgba(240, 150, 170, .14);
@@ -177,9 +177,9 @@
   .formas i:nth-child(3) { width: 34vmax; height: 34vmax; left: 8vmax; bottom: -14vmax; background: #1fc7a8; opacity: .28; border-radius: 50% 50% 35% 65% / 60% 40% 60% 40%; animation: flota3 38s ease-in-out infinite alternate; }
   .formas i:nth-child(4) { width: 22vmax; height: 22vmax; right: 6vmax; bottom: 2vmax; background: #ffb45e; opacity: .40; border-radius: 58% 42% 46% 54% / 46% 58% 42% 54%; animation: flota4 30s ease-in-out infinite alternate; }
   .formas i:nth-child(5) { width: 18vmax; height: 18vmax; left: 38%; top: 30%; background: #a7d8ff; opacity: .50; border-radius: 50%; animation: flota2 46s ease-in-out infinite alternate-reverse; }
-  @media (prefers-color-scheme: dark) {
-    body { background: linear-gradient(160deg, #0e1523, #151a30 55%, #0f2224) fixed; }
-    .formas i { opacity: .26 !important; }
+  @media all {
+    html[data-tema="oscuro"] body { background: linear-gradient(160deg, #0e1523, #151a30 55%, #0f2224) fixed; }
+    html[data-tema="oscuro"] .formas i { opacity: .42 !important; filter: blur(4px) saturate(1.5); }
   }
   @keyframes flota1 { to { transform: translate(14vmax, 10vmax) rotate(40deg) scale(1.12); } }
   @keyframes flota2 { to { transform: translate(-12vmax, 14vmax) rotate(-35deg) scale(.9); } }
@@ -223,11 +223,35 @@
   dialog label { display: block; font-weight: bold; margin: .8rem 0 .3rem; }
   dialog input, dialog textarea { width: 100%; padding: .7rem; border: 2px solid var(--acento); border-radius: 10px; background: var(--fondo); color: var(--texto); font: inherit; }
   .acciones { display: flex; flex-wrap: wrap; gap: .6rem; margin-top: 1rem; }
+  .tema-barra { display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: .6rem; padding: .8rem 1rem 0; font-weight: bold; }
+  .modo { display: inline-flex; align-items: center; gap: .5rem; padding: .4rem .9rem; background: var(--superficie); color: var(--texto); border: 3px solid var(--borde); border-radius: 12px; cursor: pointer; font-weight: bold; }
+  .modo[aria-pressed="true"] { border-color: var(--acento); box-shadow: 0 0 0 3px var(--acento); }
+  .modo[aria-pressed="true"]::after { content: "✓"; }
+  .cuadro { width: 1.5rem; height: 1.5rem; border-radius: 4px; border: 2px solid; }
+  .blanco { background: #fff; border-color: #1b2433; }
+  .negro { background: #0b0f17; border-color: #f1f5fa; }
+  .barra { background: none; backdrop-filter: none; border-bottom: 0; padding: .7rem 1rem; }
+  .barra-interna { max-width: 74rem; display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.6fr) minmax(0, 1fr); gap: .8rem; }
+  .panel { background: var(--superficie); border: 2px solid var(--borde); border-radius: 16px; padding: .8rem 1rem; box-shadow: 0 4px 14px rgba(0, 0, 0, .1); }
+  .lado { display: flex; flex-direction: column; gap: .5rem; }
+  .lado-t { margin: 0; font-size: .95rem; color: var(--texto-suave); }
+  .lado p { margin: 0; font-size: .9rem; color: var(--texto-suave); }
+  .lado .rel { gap: .4rem; }
+  @media (max-width: 860px) {
+    .barra { position: static; }
+    .barra-interna { grid-template-columns: 1fr; }
+    .centro { order: -1; }
+  }
   [hidden] { display: none !important; }
 </style>
 </head>
 <body>
 <div class="formas" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></div>
+<div class="tema-barra" role="group" aria-label="Modo de pantalla">
+  <span>Modo de pantalla:</span>
+  <button type="button" class="modo" data-modo="claro" aria-pressed="true"><span class="cuadro blanco" aria-hidden="true"></span>Claro</button>
+  <button type="button" class="modo" data-modo="oscuro" aria-pressed="false"><span class="cuadro negro" aria-hidden="true"></span>Oscuro</button>
+</div>
 <a class="saltar" href="#resultados">Saltar a las palabras</a>
 
 <header>
@@ -237,19 +261,28 @@
 
 <div class="barra" role="search">
   <div class="barra-interna">
-    <label class="buscar" for="buscador">¿Qué palabra quiere conocer?</label>
-    <div class="campo">
-      <input type="search" id="buscador" placeholder="Por ejemplo: afk, bizum, shipear…" autocomplete="off" autocapitalize="off" spellcheck="false">
-      <button type="button" class="boton" id="borrar">Borrar</button>
+    <aside class="panel lado" aria-label="Ayudas">
+      <h2 class="lado-t">Ayudas</h2>
+      <button type="button" class="boton" id="azar"><span aria-hidden="true">🎲</span> Palabra al azar</button>
+      <button type="button" class="boton" id="leer"><span aria-hidden="true">🔊</span> Leer en voz alta</button>
+    </aside>
+    <div class="panel centro">
+      <label class="buscar" for="buscador">¿Qué palabra quiere conocer?</label>
+      <div class="campo">
+        <input type="search" id="buscador" placeholder="Por ejemplo: afk, bizum, shipear…" autocomplete="off" autocapitalize="off" spellcheck="false">
+        <button type="button" class="boton" id="borrar">Borrar</button>
+      </div>
+      <p id="contador" role="status" aria-live="polite" style="margin:.6rem 0 0"></p>
     </div>
-    <div class="utiles">
-      <p id="contador" role="status" aria-live="polite"></p>
+    <aside class="panel lado" aria-label="Últimas consultas">
+      <h2 class="lado-t">Últimas consultas</h2>
+      <div class="rel" id="recientes"></div>
       <div class="tamano" role="group" aria-label="Tamaño de la letra">
         <span>Letra:</span>
         <button type="button" class="btn-tamano" id="menos" aria-label="Hacer la letra más pequeña">A−</button>
         <button type="button" class="btn-tamano" id="mas" aria-label="Hacer la letra más grande">A+</button>
       </div>
-    </div>
+    </aside>
   </div>
 </div>
 
@@ -856,7 +889,7 @@
   const CATS = {
     red: "Redes sociales y mensajes", vid: "Videojuegos", ia: "Inteligencia artificial",
     din: "Compras y dinero", seg: "Seguridad en internet", mov: "Móviles, ordenadores e internet",
-    casa: "Casa y hogar", jerga: "Jerga joven y de la calle", otros: "Series, ocio y otros"
+    casa: "Casa y hogar", jerga: "Jerga joven y de la calle", otros: "Series, ocio y otros", div: "Diversidad y respeto"
   };
   const DONDE = {
     red: "En redes sociales y aplicaciones de mensajes, como WhatsApp, Instagram o TikTok.",
@@ -867,7 +900,8 @@
     mov: "En casa, en el móvil, en el ordenador y en la conexión a internet.",
     casa: "En el hogar: cocina, salón, puerta de entrada y aparatos conectados.",
     jerga: "En conversaciones del día a día, redes sociales y entre jóvenes.",
-    otros: "En series, cine, ocio y la vida diaria."
+    otros: "En series, cine, ocio y la vida diaria.",
+    div: "En conversaciones, noticias, series y centros de estudio. Lo importante es tratar a todas las personas con respeto."
   };
   const OVER = { "Joystick": "vid" };
   const NUEVAS = [
@@ -978,6 +1012,20 @@
     ["Receta electrónica","otros","Receta médica que no va en papel: la farmacia la ve en su tarjeta sanitaria.","«Con la receta electrónica recogí el medicamento sin papeles.»","Telemedicina,Tarjeta contactless,App"],
     ["Telemedicina","otros","Consulta con el médico por teléfono o videollamada, sin ir a la consulta.","«El médico me atendió por videollamada.»","Videollamada,Receta electrónica,Cita previa online"],
     ["Archivo adjunto","mov","Archivo, como una foto o un PDF, que se envía junto con un correo.","«Le mandé el recibo como archivo adjunto.»","Correo electrónico,Descargar,Spam"],
+    ["Orientación sexual","div","Hacia qué personas siente cada uno atracción romántica o sexual. Todas las orientaciones son formas normales de ser y merecen el mismo respeto.","«En la charla explicaron qué es la orientación sexual con mucha calma.»","Heterosexual,Gay,Bisexual"],
+    ["Heterosexual","div","Persona que siente atracción por personas del otro género: un hombre que se enamora de mujeres, o una mujer de hombres.","«Mi hermano es heterosexual y está casado con su mujer.»","Orientación sexual,Gay,Lesbiana"],
+    ["Gay","div","Hombre que siente atracción romántica y sexual por otros hombres.","«Mi vecino es gay y vive con su pareja desde hace años.»","Lesbiana,Orientación sexual,LGTBIQ+ (LGBT)"],
+    ["Lesbiana","div","Mujer que siente atracción romántica y sexual por otras mujeres.","«Mi prima es lesbiana y se casó con su novia.»","Gay,Orientación sexual,LGTBIQ+ (LGBT)"],
+    ["Bisexual","div","Persona que siente atracción por personas de más de un género, por ejemplo por hombres y por mujeres.","«Mi amiga es bisexual y ha tenido parejas de ambos géneros.»","Pansexual,Gay,Lesbiana"],
+    ["Pansexual","div","Persona que se siente atraída por otras sin que su género sea lo importante: lo que cuenta es la persona.","«Dice que es pansexual: se enamora de la persona, sea cual sea su género.»","Bisexual,Orientación sexual,LGTBIQ+ (LGBT)"],
+    ["Asexual","div","Persona que siente poca o ninguna atracción sexual hacia otras. No es una enfermedad ni una elección.","«Mi sobrino es asexual y vive tan feliz.»","Orientación sexual,Heterosexual,LGTBIQ+ (LGBT)"],
+    ["LGTBIQ+ (LGBT)","div","Siglas que reúnen a lesbianas, gais, trans, bisexuales, intersexuales y queer. El «+» incluye a otras personas. Se usan para hablar del colectivo y de sus derechos.","«El ayuntamiento celebró el Orgullo, la fiesta del colectivo LGTBIQ+.»","Gay,Lesbiana,Bisexual"],
+    ["Transgénero (trans)","div","Persona cuyo género, el que siente ser, no coincide con el que se le asignó al nacer.","«Mi compañera de trabajo es una mujer trans y la tratamos como a cualquiera.»","Cisgénero,No binario,Pronombres"],
+    ["Cisgénero","div","Persona cuyo género coincide con el que se le asignó al nacer. Es el caso de la mayoría de la gente.","«Nací niña y me siento mujer: soy cisgénero.»","Transgénero (trans),No binario,Pronombres"],
+    ["No binario","div","Persona que no se siente solo hombre ni solo mujer, sino una mezcla, algo intermedio o ninguno de los dos.","«Mi vecine es una persona no binaria y prefiere el pronombre «elle».»","Pronombres,Transgénero (trans),LGTBIQ+ (LGBT)"],
+    ["Pronombres","div","Palabras con las que una persona quiere que se hable de ella: «él», «ella» o «elle». Preguntar y respetar es una muestra de educación.","«Le pregunté con qué pronombres prefería que me dirigiera a ella.»","No binario,Transgénero (trans),Cisgénero"],
+    ["Salir del armario","div","Contar a otras personas la propia orientación sexual o identidad de género. Cada uno lo hace cuando se siente preparado.","«Salió del armario ante su familia y todos le abrazaron.»","Orientación sexual,Gay,LGTBIQ+ (LGBT)"],
+    ["Queer","div","Palabra inglesa que algunas personas usan para decir que no encajan en las etiquetas habituales de género u orientación.","«Se define como queer porque no quiere ponerse una etiqueta concreta.»","LGTBIQ+ (LGBT),No binario,Pansexual"],
     ["Ajustes","mov","Sección del móvil donde se cambian opciones, como el sonido, el brillo o el wifi.","«Subí el tamaño de letra en Ajustes.»","App,Modo oscuro,Actualización"]
   ];
 
@@ -1090,6 +1138,7 @@
       res = todos.filter((t) => cat === "todas" || t.cat === cat);
     }
     const exacto = bruto && res.length && res[0].claves.includes(q);
+    if (exacto && q.length >= 3) anotar(res[0].palabra);
     todos.forEach((t) => {
       t.li.hidden = !res.includes(t);
       t.li.firstChild.open = t === res[0] && (res.length === 1 || !!exacto);
@@ -1187,6 +1236,51 @@
     form.reset();
     gracias.hidden = false;
   });
+
+  // Modo claro / oscuro
+  const rootEl = document.documentElement;
+  function ponerTema(m) {
+    rootEl.dataset.tema = m;
+    document.querySelectorAll(".modo").forEach((b) => b.setAttribute("aria-pressed", String(b.dataset.modo === m)));
+    try { localStorage.setItem("tema", m); } catch (_) {}
+  }
+  let temaInicial = null;
+  try { temaInicial = localStorage.getItem("tema"); } catch (_) {}
+  ponerTema(temaInicial || (window.matchMedia("(prefers-color-scheme: dark)").matches ? "oscuro" : "claro"));
+  document.querySelectorAll(".modo").forEach((b) => b.addEventListener("click", () => ponerTema(b.dataset.modo)));
+
+  // Ayudas laterales: palabra al azar, leer en voz alta y últimas consultas
+  let recientes = [];
+  try { recientes = JSON.parse(localStorage.getItem("recientes") || "[]"); } catch (_) {}
+  const cajaRec = document.getElementById("recientes");
+  function pintarRecientes() {
+    cajaRec.replaceChildren(...(recientes.length ? recientes.map((p) => {
+      const b = el("button", "chip", p);
+      b.type = "button";
+      b.addEventListener("click", () => ir(p));
+      return b;
+    }) : [el("p", 0, "Aquí verá las palabras que consulte.")]));
+  }
+  function anotar(p) {
+    if (recientes[0] === p) return;
+    recientes = [p].concat(recientes.filter((x) => x !== p)).slice(0, 5);
+    try { localStorage.setItem("recientes", JSON.stringify(recientes)); } catch (_) {}
+    pintarRecientes();
+  }
+  document.getElementById("azar").addEventListener("click", () => ir(todos[Math.floor(Math.random() * todos.length)].palabra));
+  document.getElementById("leer").addEventListener("click", () => {
+    if (!("speechSynthesis" in window)) return;
+    if (speechSynthesis.speaking) { speechSynthesis.cancel(); return; }
+    const d = lista.querySelector("details[open]");
+    const txt = d
+      ? d.querySelector(".palabra").firstChild.textContent + ". " + Array.from(d.querySelectorAll(".contenido > p")).slice(0, 2).map((p) => p.textContent).join(" ")
+      : "Primero abra una palabra de la lista.";
+    const u = new SpeechSynthesisUtterance(txt);
+    u.lang = "es-ES";
+    u.rate = 0.9;
+    speechSynthesis.speak(u);
+  });
+  pintarRecientes();
 
   mostrarTendencias();
   render();
