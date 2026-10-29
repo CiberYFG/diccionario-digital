@@ -20,7 +20,7 @@
     --ejemplo-fondo: #fff6d6;
     --ejemplo-borde: #e0b400;
     --foco: #c2410c;
-    --tam-base: 20px;
+    --tam-base: 18px; /* Reducido ligeramente de tamaño inicial */
   }
   @media (prefers-color-scheme: dark) {
     :root {
@@ -91,9 +91,28 @@
   .boton:hover, .chip:hover { background: var(--acento); color: var(--fondo); }
   .utiles { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: .6rem; margin-top: .7rem; }
   #contador { margin: 0; color: var(--texto-suave); }
-  .tamano { display: flex; align-items: center; gap: .4rem; }
-  .tamano span { color: var(--texto-suave); font-size: .9rem; }
-  .tamano .boton { padding: .35rem .8rem; }
+  
+  /* Botones de tamaño de letra más visuales e interactivos */
+  .tamano { display: flex; align-items: center; gap: .5rem; background: var(--superficie); padding: .3rem .6rem; border: 2px solid var(--borde); border-radius: 12px; }
+  .tamano span { color: var(--texto-suave); font-size: .9rem; font-weight: bold; }
+  .btn-tamano {
+    background: var(--acento);
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    padding: .35rem .65rem;
+    font-weight: bold;
+    cursor: pointer;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    transition: transform 0.1s ease, background 0.2s ease;
+  }
+  .btn-tamano:hover {
+    background: var(--acento-oscuro);
+    transform: scale(1.05);
+  }
+  .btn-tamano:active {
+    transform: scale(0.95);
+  }
 
   main { max-width: 46rem; margin: 0 auto; padding: 1.25rem; }
   .lista { list-style: none; margin: 0; padding: 0; display: grid; gap: 1rem; }
@@ -216,8 +235,8 @@
       <p id="contador" role="status" aria-live="polite"></p>
       <div class="tamano" role="group" aria-label="Tamaño de la letra">
         <span>Letra:</span>
-        <button type="button" class="boton" id="menos" aria-label="Hacer la letra más pequeña">A−</button>
-        <button type="button" class="boton" id="mas" aria-label="Hacer la letra más grande">A+</button>
+        <button type="button" class="btn-tamano" id="menos" aria-label="Hacer la letra más pequeña">A−</button>
+        <button type="button" class="btn-tamano" id="mas" aria-label="Hacer la letra más grande">A+</button>
       </div>
     </div>
   </div>
@@ -243,7 +262,7 @@
 <div class="autor">Web en desarrollo por CiberYFG</div>
 
 <script>
-  // ====== Palabras del diccionario (50 términos actualizados) ======
+  // ====== Palabras del diccionario (Diccionario ampliado con categorías seleccionadas) ======
   const terminos = [
     {
       palabra: "AFK",
@@ -270,6 +289,12 @@
       ejemplo: "«Me he descargado la app del banco y ya puedo ver mi saldo desde el sofá.»"
     },
     {
+      palabra: "Autenticación en dos pasos (2FA)",
+      tema: "Ciberseguridad, Privacidad y Estafas",
+      definicion: "Sistema de seguridad que añade una capa extra pidiendo una segunda confirmación (como un código numérico recibido por SMS) además de la contraseña.",
+      ejemplo: "«Activé la autenticación en dos pasos en mi correo para evitar que nadie pueda entrar sin permiso.»"
+    },
+    {
       palabra: "Avatar",
       tema: "Redes sociales e Internet",
       definicion: "Imagen, fotografía o dibujo animado que una persona elige para representarse a sí misma en un perfil de internet, un foro o un videojuego.",
@@ -282,10 +307,22 @@
       ejemplo: "«Le dieron un baneo de una semana en el chat por escribir insultos a otro usuario.»"
     },
     {
+      palabra: "Based",
+      tema: "Jerga digital y Tendencias",
+      definicion: "Término de internet muy usado para elogiar a alguien que dice o hace algo de forma auténtica, sin importarle lo que opinen los demás.",
+      ejemplo: "«Dijo lo que pensaba en la reunión sin filtros y todos dijeron que fue muy based.»"
+    },
+    {
       palabra: "Bescar / Ghosting",
       tema: "Jerga joven y tendencias",
       definicion: "Acción de desaparecer por completo de una relación o dejar de contestar los mensajes de la noche a la mañana sin dar ninguna explicación ni motivo.",
       ejemplo: "«Hablaban todos los días por el chat y de repente le hizo ghosting; no volvió a responderle.»"
+    },
+    {
+      palabra: "Binge-watching",
+      tema: "Jerga digital y Tendencias",
+      definicion: "Hábito de ver varios capítulos seguidos de una serie de televisión en maratón sin parar de golpe.",
+      ejemplo: "«Nos pasamos todo el sábado haciendo binge-watching de nuestra serie favorita.»"
     },
     {
       palabra: "Bizum",
@@ -300,10 +337,22 @@
       ejemplo: "«Como no paraban de mandarle mensajes extraños, decidió bloquear ese número.»"
     },
     {
+      palabra: "Bluetooth",
+      tema: "Dispositivos, Hardware y Tecnología Cotidiana",
+      definicion: "Tecnología inalámbrica de corto alcance que permite conectar sin cables auriculares, mandos o altavoces al teléfono móvil u ordenador.",
+      ejemplo: "«Conecté los auriculares inalámbricos por bluetooth al móvil para escuchar música por la calle.»"
+    },
+    {
       palabra: "Boss (Jefe)",
       tema: "Videojuegos y Mundo Gamer",
       definicion: "Enemigo especial y de gran tamaño al final de una fase o nivel en los videojuegos, el cual es mucho más difícil de derrotar que los contrincantes normales.",
       ejemplo: "«Tardé tres horas seguidas en conseguir derrotar al jefe final de este nivel.»"
+    },
+    {
+      palabra: "Brecha de datos",
+      tema: "Ciberseguridad, Privacidad y Estafas",
+      definicion: "Incidente de seguridad en el que piratas informáticos logran vulnerar los sistemas y acceder a bases de datos con información confidencial o privada.",
+      ejemplo: "«La empresa avisó de una brecha de datos y recomendó cambiar las contraseñas inmediatamente.»"
     },
     {
       palabra: "Bug",
@@ -312,10 +361,34 @@
       ejemplo: "«El personaje atravesó la pared por un bug del juego y tuvimos que reiniciar la partida.»"
     },
     {
+      palabra: "Cargador inalámbrico",
+      tema: "Dispositivos, Hardware y Tecnología Cotidiana",
+      definicion: "Base electrónica que recarga la batería de un teléfono móvil simplemente apoyándolo encima, sin necesidad de conectar ningún cable físico.",
+      ejemplo: "«Dejo el móvil sobre el cargador inalámbrico en la mesilla de noche antes de dormir.»"
+    },
+    {
+      palabra: "Certificado SSL",
+      tema: "Ciberseguridad, Privacidad y Estafas",
+      definicion: "Sello de seguridad digital que cifra la conexión y hace que una página web sea fiable (suele mostrar un icono de un candado cerrado en el navegador).",
+      ejemplo: "«Antes de meter la tarjeta en una tienda online, compruebo que tenga certificado SSL.»"
+    },
+    {
       palabra: "Ciberataque",
       tema: "Seguridad y Tecnología",
       definicion: "Intento malintencionado realizado por piratas informáticos para robar datos privados, bloquear sistemas digitales o dañar equipos conectados a la red.",
       ejemplo: "«El ayuntamiento sufrió un ciberataque y los ordenadores de las oficinas dejaron de funcionar.»"
+    },
+    {
+      palabra: "Cifrado",
+      tema: "Ciberseguridad, Privacidad y Estafas",
+      definicion: "Método matemático avanzado para codificar un mensaje o archivo de modo que resulte imposible de leer para cualquiera que no tenga la clave secreta.",
+      ejemplo: "«Los mensajes de esta aplicación tienen cifrado de extremo a extremo para mayor privacidad.»"
+    },
+    {
+      palabra: "Cloud computing",
+      tema: "Dispositivos, Hardware y Tecnología Cotidiana",
+      definicion: "Uso de redes de servidores remotos conectados a internet para almacenar datos y ejecutar programas sin depender de la capacidad del ordenador.",
+      ejemplo: "«Gracias al cloud computing podemos trabajar varias personas en el mismo documento a la vez.»"
     },
     {
       palabra: "Clickbait",
@@ -360,6 +433,18 @@
       ejemplo: "«Mi padre intentó bailar las canciones de moda en la fiesta y nos dio un poco de cringe.»"
     },
     {
+      palabra: "Delulu",
+      tema: "Jerga digital y Tendencias",
+      definicion: "Expresión informal que describe a alguien que vive en su propio mundo de fantasía con expectativas poco realistas sobre algo.",
+      ejemplo: "«Pensaba que le iba a tocar la lotería sin comprar décimo; está totalmente delulu.»"
+    },
+    {
+      palabra: "Disco SSD",
+      tema: "Dispositivos, Hardware y Tecnología Cotidiana",
+      definicion: "Memoria de almacenamiento interna moderna basada en chips que es ultrarrápida y sustituye a los antiguos discos duros mecánicos.",
+      ejemplo: "«Cambiamos el disco antiguo por un SSD y ahora el ordenador enciende en cuestión de segundos.»"
+    },
+    {
       palabra: "Directo (Streaming)",
       tema: "Redes sociales e Internet",
       definicion: "Emisión de vídeo y audio en tiempo real a través de internet donde el creador interactúa con las personas que están viendo el contenido al momento.",
@@ -384,6 +469,24 @@
       ejemplo: "«Las fotos de paisajes antiguos tienen mucho engagement y la gente escribe comentarios muy bonitos.»"
     },
     {
+      palabra: "Era",
+      tema: "Jerga digital y Tendencias",
+      definicion: "Periodo de tiempo en el que una persona adopta un estilo, un tipo de música o una actitud concreta en su vida cotidiana.",
+      ejemplo: "«Dice que está en su era de cocinar repostería todos los fines de semana.»"
+    },
+    {
+      palabra: "Ethernet",
+      tema: "Dispositivos, Hardware y Tecnología Cotidiana",
+      definicion: "Cable físico tradicional con conectores que sirve para conectar el ordenador directamente al router de casa logrando la máxima velocidad de internet.",
+      ejemplo: "«Conecté un cable ethernet a la consola para que las descargas de los juegos vayan mucho más rápido.»"
+    },
+    {
+      palabra: "Fibra óptica",
+      tema: "Dispositivos, Hardware y Tecnología Cotidiana",
+      definicion: "Tecnología de transmisión de datos mediante hilos de vidrio muy finos que transporta internet a velocidad de la luz directamente a los hogares.",
+      ejemplo: "«Contratamos fibra óptica en casa y ahora podemos ver películas en alta definición sin cortes.»"
+    },
+    {
       palabra: "Filtro",
       tema: "Redes sociales e Internet",
       definicion: "Efecto digital que se aplica automáticamente sobre la cámara del teléfono para retocar la luz, cambiar el fondo o añadir elementos divertidos a una foto.",
@@ -400,6 +503,18 @@
       tema: "Jerga joven y tendencias",
       definicion: "Verbo informal que se utiliza cuando alguien presume o presume de manera abierta de sus logros, ropa nueva, dinero o posesiones.",
       ejemplo: "«Se compró unas zapatillas nuevas y no paraba de flexear con ellas delante de sus amigos.»"
+    },
+    {
+      palabra: "Glow up",
+      tema: "Jerga digital y Tendencias",
+      definicion: "Transformación física, estética o personal muy positiva que experimenta alguien con el paso del tiempo.",
+      ejemplo: "«Viendo fotos suyas de hace años se nota que ha tenido un glow up impresionante.»"
+    },
+    {
+      palabra: "Hardware",
+      tema: "Dispositivos, Hardware y Tecnología Cotidiana",
+      definicion: "Conjunto de piezas físicas, componentes electrónicos, circuitos y carcasas que forman un ordenador o un teléfono móvil.",
+      ejemplo: "«Tuve que cambiar una pieza de hardware al ordenador porque se le rompió el ventilador.»"
     },
     {
       palabra: "Hashtag",
@@ -426,10 +541,28 @@
       ejemplo: "«Esa influencer de viajes recomendó un pueblo pequeño y este fin de semana se ha llenado de visitantes.»"
     },
     {
+      palabra: "Joystick",
+      tema: "Dispositivos, Hardware y Tecnología Cotidiana",
+      definicion: "Mando analógico en forma de palanca que se utiliza en consolas u ordenadores para mover con precisión personajes o vehículos en los juegos.",
+      ejemplo: "«Se le rompió el joystick del mando de la consola y tuvimos que comprar uno de repuesto.»"
+    },
+    {
+      palabra: "Keylogger",
+      tema: "Ciberseguridad, Privacidad y Estafas",
+      definicion: "Programa espía malicioso que se oculta en el equipo y registra en secreto cada tecla que pulsas para robar contraseñas y datos bancarios.",
+      ejemplo: "«Un buen análisis de seguridad detectó un keylogger oculto y logró eliminarlo a tiempo.»"
+    },
+    {
       palabra: "Lag",
       tema: "Videojuegos y Mundo Gamer",
       definicion: "Retraso o demora molesta en la conexión a internet que provoca que las acciones en los videojuegos o videollamadas vayan a tirones o tarde en responder.",
       ejemplo: "«El personaje se quedó congelado en medio de la pantalla por culpa de un pico de lag.»"
+    },
+    {
+      palabra: "Lore",
+      tema: "Jerga digital y Tendencias",
+      definicion: "Conjunto de historias de fondo, mitología o detalles ocultos que explican el universo y el pasado de un videojuego, serie o libro.",
+      ejemplo: "«Me leí todos los libros del juego para entender mejor el lore de la historia.»"
     },
     {
       palabra: "Loot",
@@ -474,6 +607,12 @@
       ejemplo: "«Para terminar la compra online tuve que introducir el código OTP que me llegó por SMS al móvil.»"
     },
     {
+      palabra: "Pantalla táctil",
+      tema: "Dispositivos, Hardware y Tecnología Cotidiana",
+      definicion: "Pantalla electrónica capaz de detectar el contacto directo de los dedos para interactuar con los menús y aplicaciones sin ratón.",
+      ejemplo: "«La pantalla táctil del cajero automático responde muy bien cuando marcas los números.»"
+    },
+    {
       palabra: "Pay-to-win",
       tema: "Videojuegos y Mundo Gamer",
       definicion: "Videojuego en el que los usuarios que pagan dinero real con su tarjeta consiguen ventajas injustas frente a los jugadores que prefieren jugar de forma gratuita.",
@@ -486,10 +625,22 @@
       ejemplo: "«Recibí un correo falso pidiendo las claves del banco; era un claro caso de phishing y lo borré.»"
     },
     {
+      palabra: "POV",
+      tema: "Jerga digital y Tendencias",
+      definicion: "Abreviatura en inglés de Point of View (Punto de vista); se usa para vídeos grabados simulando que miras una situación desde los ojos de otra persona.",
+      ejemplo: "«Me mandaron un vídeo en POV de cómo se ve la cabina de un piloto de avión.»"
+    },
+    {
       palabra: "Post",
       tema: "Redes sociales e Internet",
       definicion: "Cualquier publicación que se comparte en una red social, ya sea una fotografía acompañada de texto, un enlace o un mensaje breve.",
       ejemplo: "«Publicó un post en su perfil con tres fotos muy bonitas de la excursión del domingo.»"
+    },
+    {
+      palabra: "Powerbank",
+      tema: "Dispositivos, Hardware y Tecnología Cotidiana",
+      definicion: "Batería portátil recargable que se lleva en el bolso o bolsillo para conectar y recargar el teléfono móvil cuando estás fuera de casa sin enchufes.",
+      ejemplo: "«Llevo una powerbank en la mochila por si acaso al móvil se le acaba la batería por la tarde.»"
     },
     {
       palabra: "Racha (Streak)",
@@ -522,6 +673,12 @@
       ejemplo: "«Reiniciamos el router desenchufándolo unos segundos porque el internet iba muy lento.»"
     },
     {
+      palabra: "Shippear",
+      tema: "Jerga digital y Tendencias",
+      definicion: "Deseo o preferencia romántica de que dos personajes de una serie, película o famosos terminen juntos como pareja.",
+      ejemplo: "«Todo el mundo en redes está shippear a los dos protagonistas de esta serie.»"
+    },
+    {
       palabra: "Simp",
       tema: "Jerga joven y tendencias",
       definicion: "Término informal para describir a una persona que muestra una atención excesiva, sumisa o exagerada hacia otra con la única intención de agradarle.",
@@ -534,10 +691,22 @@
       ejemplo: "«Consiguió una skin dorada para su pistola favorita tras completar un reto difícil.»"
     },
     {
+      palabra: "Smart TV",
+      tema: "Dispositivos, Hardware y Tecnología Cotidiana",
+      definicion: "Televisión inteligente conectada a internet que incorpora aplicaciones para ver plataformas de streaming y navegar sin antena tradicional.",
+      ejemplo: "«Compramos una Smart TV para poder ver las películas y series directamente con una app.»"
+    },
+    {
       palabra: "Smishing",
       tema: "Seguridad y Tecnología",
       definicion: "Variante de estafa digital similar al phishing, pero que se lleva a cabo enviando mensajes de texto fraudulentos (SMS) al teléfono móvil en lugar de correos.",
       ejemplo: "«Me mandaron un SMS diciendo que mi paquete estaba retenido; era smishing puro y duro.»"
+    },
+    {
+      palabra: "Software",
+      tema: "Dispositivos, Hardware y Tecnología Cotidiana",
+      definicion: "Conjunto de programas, sistemas operativos, aplicaciones y datos que hacen funcionar los dispositivos electrónicos por dentro.",
+      ejemplo: "«Actualizó el software del teléfono móvil para solucionar pequeños fallos y mejorar la seguridad.»"
     },
     {
       palabra: "Spam",
@@ -550,6 +719,18 @@
       tema: "Series y cine",
       definicion: "Revelación anticipada de un detalle importante de una película, serie o libro que arruina la sorpresa a quienes todavía no lo han visto o leído.",
       ejemplo: "«¡No me cuentes el final de la serie! Guárdate el spoiler para cuando la termine.»"
+    },
+    {
+      palabra: "Spoofing",
+      tema: "Ciberseguridad, Privacidad y Estafas",
+      definicion: "Técnica de suplantación en la que los estafadores falsifican el número de teléfono o correo para que parezca que llaman de una entidad oficial.",
+      ejemplo: "«Usaron spoofing para que en la pantalla del móvil apareciera el nombre real de mi banco.»"
+    },
+    {
+      palabra: "Spyware",
+      tema: "Ciberseguridad, Privacidad y Estafas",
+      definicion: "Programa malicioso que se instala de forma oculta en el dispositivo para recopilar información sobre tus hábitos de navegación sin que te enteres.",
+      ejemplo: "«El análisis detectó un pequeño spyware y procedió a eliminarlo del sistema.»"
     },
     {
       palabra: "Stalkear",
@@ -570,10 +751,34 @@
       ejemplo: "«Vemos las series favoritas de los viernes por streaming directamente en la televisión.»"
     },
     {
+      palabra: "Token digital",
+      tema: "Ciberseguridad, Privacidad y Estafas",
+      definicion: "Código numérico de seguridad temporal que cambia de forma constante en la app del banco para autorizar pagos y transferencias seguras.",
+      ejemplo: "«Tuve que aprobar la transferencia bancaria introduciendo el token digital en el móvil.»"
+    },
+    {
+      palabra: "Touch grass",
+      tema: "Jerga digital y Tendencias",
+      definicion: "Expresión irónica que se le dice a alguien que pasa demasiado tiempo conectado a internet para que salga a la calle a tomar el aire.",
+      ejemplo: "«Lleva diez horas seguidas jugando; le hace falta salir a touch grass un rato.»"
+    },
+    {
       palabra: "Troll",
       tema: "Redes sociales e Internet",
       definicion: "Usuario que entra en foros, redes sociales o chats exclusivamente para provocar enfados, insultar o desviar la atención con comentarios absurdos.",
       ejemplo: "«Un troll entró en el directo del debate a poner faltas de respeto y lo bloquearon.»"
+    },
+    {
+      palabra: "Troyano",
+      tema: "Ciberseguridad, Privacidad y Estafas",
+      definicion: "Virus informático que se oculta dentro de un programa o archivo aparentemente inofensivo para abrir una brecha de seguridad en el ordenador.",
+      ejemplo: "«Descargó un juego pirata que venía infectado con un troyano peligroso.»"
+    },
+    {
+      palabra: "Vibes",
+      tema: "Jerga digital y Tendencias",
+      definicion: "Sensación, energía o ambiente general que transmite una persona, un lugar o una situación concreta.",
+      ejemplo: "«Este café tiene unas vibes muy tranquilas para sentarse a leer un rato.»"
     },
     {
       palabra: "Videollamada",
@@ -586,6 +791,12 @@
       tema: "Redes sociales e Internet",
       definicion: "Contenido digital (vídeo, foto o frase) que se comparte de forma masiva por miles de usuarios y alcanza una popularidad enorme en pocos días.",
       ejemplo: "«El vídeo del perro rescatado se volvió viral y lo vieron millones de personas en internet.»"
+    },
+    {
+      palabra: "Vishing",
+      tema: "Ciberseguridad, Privacidad y Estafas",
+      definicion: "Estafa telefónica en la que los ciberdelincuentes llaman por teléfono haciéndose pasar por empleados del banco o de una compañía para robar datos.",
+      ejemplo: "«Me llamaron diciendo que había un cargo extraño; olía a vishing y colgué de inmediato.»"
     },
     {
       palabra: "VPN",
@@ -691,10 +902,10 @@
     buscador.focus();
   });
 
-  let tam = 20;
+  let tam = 18; // Ajustado al nuevo tamaño base
   const raiz = document.documentElement;
   function cambiarTam(delta) {
-    tam = Math.min(30, Math.max(16, tam + delta));
+    tam = Math.min(28, Math.max(14, tam + delta));
     raiz.style.setProperty("--tam-base", tam + "px");
   }
   document.getElementById("mas").addEventListener("click", () => cambiarTam(2));
