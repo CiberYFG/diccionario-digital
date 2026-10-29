@@ -149,7 +149,6 @@
     border: 3px solid var(--acento); border-radius: 999px;
     cursor: pointer;
   }
-  /* Fondo tierno con degradado suave y un patrón de puntitos que se desplaza muy despacio */
   body { background: linear-gradient(160deg, #fff1f3, #eff5ff 50%, #eefaf2) fixed; padding-bottom: 4rem; }
   @media (prefers-color-scheme: dark) {
     body { background: linear-gradient(160deg, #141a26, #1b2036 50%, #14242b) fixed; }
@@ -244,79 +243,367 @@
 <div class="autor">Web en desarrollo por CiberYFG</div>
 
 <script>
-  // ====== Palabras del diccionario (puede añadir más siguiendo el mismo formato) ======
+  // ====== Palabras del diccionario (50 términos actualizados) ======
   const terminos = [
+    {
+      palabra: "AFK",
+      tema: "Videojuegos y Mundo Gamer",
+      definicion: "Abreviatura en inglés que significa que un jugador se ha apartado temporalmente del ordenador o la consola y no está prestando atención al juego.",
+      ejemplo: "«Me tuve que levantar un momento al baño y dejé el personaje AFK en la partida.»"
+    },
+    {
+      palabra: "Algoritmo",
+      tema: "Redes sociales e Internet",
+      definicion: "Es un sistema informático o conjunto de reglas que estudian sus gustos en las redes sociales para decidir qué vídeos o publicaciones mostrarle a continuación.",
+      ejemplo: "«El algoritmo de TikTok ya sabe exactamente qué recetas de cocina me gustan.»"
+    },
+    {
+      palabra: "Antivirus",
+      tema: "Seguridad y Tecnología",
+      definicion: "Programa informático diseñado específicamente para examinar su ordenador o móvil, detectar programas maliciosos y eliminarlos antes de que causen daños.",
+      ejemplo: "«Instaló un buen antivirus en su ordenador nuevo para navegar con total tranquilidad.»"
+    },
     {
       palabra: "App",
       tema: "Móvil y ordenador",
-      definicion: "Es la forma corta de decir «aplicación». Es un programa que se instala en el móvil o la tableta para hacer una cosa concreta: llamar, ver fotos, pedir un taxi, etc. Es como una herramienta dentro de su caja de herramientas.",
+      definicion: "Es la forma corta de decir «aplicación». Es un programa que se instala en el móvil o la tableta para hacer una cosa concreta: llamar, ver fotos, pedir un taxi, etc.",
       ejemplo: "«Me he descargado la app del banco y ya puedo ver mi saldo desde el sofá.»"
+    },
+    {
+      palabra: "Avatar",
+      tema: "Redes sociales e Internet",
+      definicion: "Imagen, fotografía o dibujo animado que una persona elige para representarse a sí misma en un perfil de internet, un foro o un videojuego.",
+      ejemplo: "«En el juego de la consola, su avatar lleva puesta una chaqueta roja muy llamativa.»"
+    },
+    {
+      palabra: "Baneo",
+      tema: "Videojuegos y Mundo Gamer",
+      definicion: "Castigo impuesto por los administradores que prohíbe temporal o definitivamente a un usuario acceder a un videojuego, chat o plataforma por incumplir las normas.",
+      ejemplo: "«Le dieron un baneo de una semana en el chat por escribir insultos a otro usuario.»"
+    },
+    {
+      palabra: "Bescar / Ghosting",
+      tema: "Jerga joven y tendencias",
+      definicion: "Acción de desaparecer por completo de una relación o dejar de contestar los mensajes de la noche a la mañana sin dar ninguna explicación ni motivo.",
+      ejemplo: "«Hablaban todos los días por el chat y de repente le hizo ghosting; no volvió a responderle.»"
     },
     {
       palabra: "Bizum",
       tema: "Dinero y compras",
-      definicion: "Es una forma de enviar dinero a otra persona desde el móvil en pocos segundos, usando solo su número de teléfono. Funciona a través de su banco y no hace falta saber su número de cuenta.",
-      ejemplo: "«Te hago un bizum de 12 euros para pagar mi parte de la comida.»"
+      definicion: "Es una forma de enviar dinero a otra persona desde el móvil en pocos segundos, usando solo su número de teléfono y a través de la aplicación de su banco.",
+      ejemplo: "«Te hago un bizum de 12 euros para pagar mi parte de la comida de ayer.»"
+    },
+    {
+      palabra: "Bloquear",
+      tema: "Redes sociales e Internet",
+      definicion: "Opción de seguridad en aplicaciones y redes sociales para impedir que un usuario molesto pueda ver su perfil, llamarle o mandarle mensajes.",
+      ejemplo: "«Como no paraban de mandarle mensajes extraños, decidió bloquear ese número.»"
+    },
+    {
+      palabra: "Boss (Jefe)",
+      tema: "Videojuegos y Mundo Gamer",
+      definicion: "Enemigo especial y de gran tamaño al final de una fase o nivel en los videojuegos, el cual es mucho más difícil de derrotar que los contrincantes normales.",
+      ejemplo: "«Tardé tres horas seguidas en conseguir derrotar al jefe final de este nivel.»"
+    },
+    {
+      palabra: "Bug",
+      tema: "Videojuegos y Mundo Gamer",
+      definicion: "Error o fallo imprevisto de programación en el código de un videojuego o aplicación que hace que no funcione como debería o se quede bloqueado.",
+      ejemplo: "«El personaje atravesó la pared por un bug del juego y tuvimos que reiniciar la partida.»"
+    },
+    {
+      palabra: "Ciberataque",
+      tema: "Seguridad y Tecnología",
+      definicion: "Intento malintencionado realizado por piratas informáticos para robar datos privados, bloquear sistemas digitales o dañar equipos conectados a la red.",
+      ejemplo: "«El ayuntamiento sufrió un ciberataque y los ordenadores de las oficinas dejaron de funcionar.»"
+    },
+    {
+      palabra: "Clickbait",
+      tema: "Redes sociales e Internet",
+      definicion: "Titular exagerado, sensacionalista o engañoso en una noticia o vídeo pensado exclusivamente para llamar su atención y conseguir que haga clic.",
+      ejemplo: "«Decía en el titular que el mundo iba a cambiar hoy, pero era solo clickbait para ganar visitas.»"
     },
     {
       palabra: "Código QR",
       tema: "Móvil y ordenador",
-      definicion: "Es un cuadradito lleno de puntos blancos y negros. Si apunta con la cámara del móvil, se abre una página, un menú o una información sin tener que escribir nada.",
-      ejemplo: "«En el restaurante hay un código QR en la mesa para ver la carta en el móvil.»"
+      definicion: "Es un cuadradito lleno de puntos blancos y negros. Si apunta con la cámara del móvil, se abre una página o un menú sin tener que escribir ninguna dirección.",
+      ejemplo: "«En el restaurante hay un código QR en la mesa para ver la carta directamente en el móvil.»"
+    },
+    {
+      palabra: "Comunidad",
+      tema: "Redes sociales e Internet",
+      definicion: "Grupo amplio de personas que comparten gustos, aficiones o intereses similares y se comunican habitualmente a través de plataformas digitales.",
+      ejemplo: "«Se ha creado una comunidad muy sana de personas mayores que aprenden informática en internet.»"
+    },
+    {
+      palabra: "Cookie",
+      tema: "Seguridad y Tecnología",
+      definicion: "Pequeño archivo de texto que una página web guarda en su navegador al entrar para recordar sus preferencias, contraseñas o datos de navegación.",
+      ejemplo: "«Tuve que aceptar las cookies de la página web para poder ver el periódico digital.»"
+    },
+    {
+      palabra: "Craftear",
+      tema: "Videojuegos y Mundo Gamer",
+      definicion: "Acción de crear, construir o combinar diferentes materias primas u objetos dentro de un videojuego para fabricar herramientas o armas útiles.",
+      ejemplo: "«Necesito recolectar madera y piedra para craftear un hacha y poder cortar más rápido.»"
+    },
+    {
+      palabra: "Creep",
+      tema: "Jerga joven y tendencias",
+      definicion: "Palabra para referirse a una persona extraña cuyo comportamiento o actitud resulta sospechoso, desagradable o incómodo para los demás.",
+      ejemplo: "«Había un hombre mirando fijamente por la ventana todo el rato y daba un poco de creep.»"
     },
     {
       palabra: "Cringe",
-      tema: "Redes sociales y jerga joven",
-      definicion: "Palabra que usan los jóvenes para algo que da vergüenza ajena, que resulta incómodo o ridículo de ver. Viene del inglés y se pronuncia «crinch».",
-      ejemplo: "«Mi padre intentó bailar en el cumpleaños y fue un poco cringe, pero nos reímos mucho.»"
+      tema: "Redes sociales e jerga joven",
+      definicion: "Sensación de vergüenza ajena o incomodidad extrema que se experimenta al ver a alguien hacer algo ridículo o fuera de lugar.",
+      ejemplo: "«Mi padre intentó bailar las canciones de moda en la fiesta y nos dio un poco de cringe.»"
+    },
+    {
+      palabra: "Directo (Streaming)",
+      tema: "Redes sociales e Internet",
+      definicion: "Emisión de vídeo y audio en tiempo real a través de internet donde el creador interactúa con las personas que están viendo el contenido al momento.",
+      ejemplo: "«Esta tarde a las ocho hay un directo en internet sobre cómo cuidar las plantas en casa.»"
+    },
+    {
+      palabra: "DLC",
+      tema: "Videojuegos y Mundo Gamer",
+      definicion: "Contenido descargable adicional que se compra o se añade a un videojuego ya existente para ampliar su historia, mapas o personajes.",
+      ejemplo: "«Han sacado un DLC gratuito para este juego con tres misiones nuevas muy divertidas.»"
+    },
+    {
+      palabra: "DNI electrónico",
+      tema: "Seguridad y Tecnología",
+      definicion: "Documento nacional de identidad que incluye un pequeño chip criptográfico para identificarse de forma totalmente segura y firmar papeles oficiales en el ordenador.",
+      ejemplo: "«Pude presentar la declaración de la renta desde casa gracias al lector de DNI electrónico.»"
+    },
+    {
+      palabra: "Engagement",
+      tema: "Redes sociales e Internet",
+      definicion: "Grado de fidelidad, interacción y participación que los seguidores muestran hacia una cuenta, marca o creador de contenido en las redes sociales.",
+      ejemplo: "«Las fotos de paisajes antiguos tienen mucho engagement y la gente escribe comentarios muy bonitos.»"
+    },
+    {
+      palabra: "Filtro",
+      tema: "Redes sociales e Internet",
+      definicion: "Efecto digital que se aplica automáticamente sobre la cámara del teléfono para retocar la luz, cambiar el fondo o añadir elementos divertidos a una foto.",
+      ejemplo: "«Usó un filtro gracioso en la videollamada que nos puso orejas de perro a todos.»"
+    },
+    {
+      palabra: "Firewall (Cortafuegos)",
+      tema: "Seguridad y Tecnología",
+      definicion: "Sistema de seguridad informático que vigila el tráfico de datos y bloquea accesos no autorizados o peligrosos hacia su ordenador o red doméstica.",
+      ejemplo: "«El cortafuegos saltó y detuvo un intento sospechoso de conexión desde el extranjero.»"
+    },
+    {
+      palabra: "Flexear",
+      tema: "Jerga joven y tendencias",
+      definicion: "Verbo informal que se utiliza cuando alguien presume o presume de manera abierta de sus logros, ropa nueva, dinero o posesiones.",
+      ejemplo: "«Se compró unas zapatillas nuevas y no paraba de flexear con ellas delante de sus amigos.»"
+    },
+    {
+      palabra: "Hashtag",
+      tema: "Redes sociales e Internet",
+      definicion: "Etiqueta formada por una palabra o frase precedida por el símbolo de la almohadilla (#) que sirve para clasificar temas y agrupar mensajes en las redes.",
+      ejemplo: "«Puso el hashtag #CocinaCasera para que su receta la pudiera ver gente de todo el mundo.»"
     },
     {
       palabra: "Hater",
-      tema: "Redes sociales y jerga joven",
-      definicion: "Es una persona que escribe comentarios negativos, burlas o insultos en internet, casi siempre sin conocer de verdad a quien critica. En español sería algo así como «criticón de internet».",
-      ejemplo: "«Subió un vídeo cantando y un hater le escribió que lo hacía fatal. Mejor no hacerle caso.»"
+      tema: "Redes sociales e Internet",
+      definicion: "Persona que se dedica a escribir comentarios malintencionados, burlas o críticas destructivas en internet, casi siempre sin motivo justificado.",
+      ejemplo: "«Subió una foto de su jardín y un hater le dejó un comentario feo que decidió borrar.»"
+    },
+    {
+      palabra: "Hype",
+      tema: "Jerga joven y tendencias",
+      definicion: "Emoción, ilusión o expectativa exagerada que tiene la gente ante el lanzamiento próximo de un videojuego, una película o un producto muy esperado.",
+      ejemplo: "«El tráiler de la nueva película de ciencia ficción ha creado un hype tremendo entre los jóvenes.»"
     },
     {
       palabra: "Influencer",
-      tema: "Redes sociales y jerga joven",
-      definicion: "Persona con muchos seguidores en redes sociales (Instagram, TikTok, YouTube…) que comparte su vida o sus gustos y cuyas recomendaciones influyen en lo que compra o hace la gente. Algunas cobran por recomendar productos.",
-      ejemplo: "«Esa influencer de cocina enseña recetas fáciles y miles de personas las copian.»"
+      tema: "Redes sociales e Internet",
+      definicion: "Persona con gran número de seguidores en redes sociales cuyas opiniones, recomendaciones o estilo de vida influyen en las decisiones de su público.",
+      ejemplo: "«Esa influencer de viajes recomendó un pueblo pequeño y este fin de semana se ha llenado de visitantes.»"
+    },
+    {
+      palabra: "Lag",
+      tema: "Videojuegos y Mundo Gamer",
+      definicion: "Retraso o demora molesta en la conexión a internet que provoca que las acciones en los videojuegos o videollamadas vayan a tirones o tarde en responder.",
+      ejemplo: "«El personaje se quedó congelado en medio de la pantalla por culpa de un pico de lag.»"
+    },
+    {
+      palabra: "Loot",
+      tema: "Videojuegos y Mundo Gamer",
+      definicion: "Conjunto de tesoros, recompensas, armas o monedas que un jugador consigue al derrotar enemigos difíciles o abrir cofres ocultos en el juego.",
+      ejemplo: "«Abrimos el cofre secreto del castillo y conseguimos un loot increíble para mejorar el equipo.»"
+    },
+    {
+      palabra: "Main",
+      tema: "Videojuegos y Mundo Gamer",
+      definicion: "Personaje, arma o herramienta principal que un usuario prefiere utilizar casi siempre por encima de los demás debido a que se adapta mejor a su estilo.",
+      ejemplo: "«En este juego de lucha, mi personaje main es un mago que lanza hechizos de fuego.»"
+    },
+    {
+      palabra: "Malware",
+      tema: "Seguridad y Tecnología",
+      definicion: "Término general que engloba a cualquier tipo de software malicioso (virus, troyanos, programas espía) creado con la intención de dañar un equipo.",
+      ejemplo: "«Descargó un archivo de una página poco fiable y se le coló malware en el ordenador.»"
+    },
+    {
+      palabra: "Meme",
+      tema: "Redes sociales e Internet",
+      definicion: "Imagen, vídeo corto o frase graciosa acompañada de texto que se comparte de forma masiva en internet para expresar una situación cotidiana con humor.",
+      ejemplo: "«Me mandaron un meme al grupo de WhatsApp sobre madrugar los lunes que era genial.»"
+    },
+    {
+      palabra: "NPC",
+      tema: "Videojuegos y Mundo Gamer",
+      definicion: "Personaje no jugador; es decir, un personaje controlado por la inteligencia artificial del videojuego que cumple misiones secundarias o da pistas.",
+      ejemplo: "«Me acerqué a hablar con un NPC del pueblo para que me indicara dónde estaba la tienda.»"
     },
     {
       palabra: "Nube",
       tema: "Internet",
-      definicion: "No es una nube de verdad: son ordenadores muy potentes, en otro lugar, que guardan sus archivos por usted. Así puede ver sus fotos desde el móvil o el ordenador y no las pierde si el aparato se rompe.",
-      ejemplo: "«Mis fotos de las vacaciones están guardadas en la nube, así que las veo desde cualquier sitio.»"
+      definicion: "Servicio en internet que almacena sus documentos, fotos y archivos en ordenadores remotos muy seguros para que pueda acceder a ellos desde cualquier lugar.",
+      ejemplo: "«Todas las fotos del viaje están guardadas en la nube y puedo verlas desde el móvil.»"
+    },
+    {
+      palabra: "OTP (Código de un solo uso)",
+      tema: "Seguridad y Tecnología",
+      definicion: "Contraseña numérica temporal de corta duración que el banco o una aplicación le envía por mensaje de texto para confirmar que es usted quien realiza una operación.",
+      ejemplo: "«Para terminar la compra online tuve que introducir el código OTP que me llegó por SMS al móvil.»"
+    },
+    {
+      palabra: "Pay-to-win",
+      tema: "Videojuegos y Mundo Gamer",
+      definicion: "Videojuego en el que los usuarios que pagan dinero real con su tarjeta consiguen ventajas injustas frente a los jugadores que prefieren jugar de forma gratuita.",
+      ejemplo: "«Es un juego divertido, pero resulta molesto que sea tan pay-to-win en los niveles avanzados.»"
     },
     {
       palabra: "Phishing",
-      tema: "Seguridad",
-      definicion: "Es una estafa. Alguien se hace pasar por su banco, correos o una tienda y le manda un mensaje o un correo con un enlace para que le dé sus claves o datos. Se pronuncia «fishing», como «pescar»: usan un cebo para ver quién pica. Regla de oro: ante la duda, no pulse el enlace y llame usted mismo a su banco.",
-      ejemplo: "«Me llegó un SMS diciendo que mi paquete estaba retenido y que pagara 2 euros en un enlace. Era phishing y lo borré.»"
+      tema: "Seguridad y Tecnología",
+      definicion: "Estafa en la que un desconocido se hace pasar por su banco o una empresa conocida mediante un mensaje falso para robarle contraseñas o datos personales.",
+      ejemplo: "«Recibí un correo falso pidiendo las claves del banco; era un claro caso de phishing y lo borré.»"
+    },
+    {
+      palabra: "Post",
+      tema: "Redes sociales e Internet",
+      definicion: "Cualquier publicación que se comparte en una red social, ya sea una fotografía acompañada de texto, un enlace o un mensaje breve.",
+      ejemplo: "«Publicó un post en su perfil con tres fotos muy bonitas de la excursión del domingo.»"
+    },
+    {
+      palabra: "Racha (Streak)",
+      tema: "Jerga joven y tendencias",
+      definicion: "Contador numérico que indica los días seguidos que dos usuarios llevan interactuando o mandándose mensajes sin interrumpir la cadena en una aplicación.",
+      ejemplo: "«Llevamos una racha de más de cien días seguidos mandándonos mensajes en la aplicación.»"
+    },
+    {
+      palabra: "Random",
+      tema: "Jerga joven y tendencias",
+      definicion: "Palabra para referirse a algo totalmente aleatorio, inesperado, sin un orden lógico o a una persona cualquiera de la que no se conoce nada.",
+      ejemplo: "«Íbamos paseando y nos encontramos a un amigo en un sitio súper random de la ciudad.»"
+    },
+    {
+      palabra: "Ransomware",
+      tema: "Seguridad y Tecnología",
+      definicion: "Peligroso virus informático que bloquea o cifra todos los archivos de su ordenador y exige el pago de un rescate económico a cambio de devolverlos.",
+      ejemplo: "«Las copias de seguridad en discos externos son la mejor defensa para no sufrir un ransomware.»"
+    },
+    {
+      palabra: "Respawn",
+      tema: "Videojuegos y Mundo Gamer",
+      definicion: "Acción en la que un personaje vuelve a aparecer vivo en el mapa del videojuego segundos después de haber sido derrotado o eliminado.",
+      ejemplo: "«Me eliminaron en la esquina, pero hice respawn enseguida para volver con mi equipo.»"
+    },
+    {
+      palabra: "Router",
+      tema: "Internet",
+      definicion: "Aparato electrónico instalado en casa que recibe la señal de internet y la distribuye por medio de cables o mediante ondas de wifi a todos los dispositivos.",
+      ejemplo: "«Reiniciamos el router desenchufándolo unos segundos porque el internet iba muy lento.»"
+    },
+    {
+      palabra: "Simp",
+      tema: "Jerga joven y tendencias",
+      definicion: "Término informal para describir a una persona que muestra una atención excesiva, sumisa o exagerada hacia otra con la única intención de agradarle.",
+      ejemplo: "«Le compraba regalos caros a todas horas solo para llamar su atención como un simp.»"
+    },
+    {
+      palabra: "Skin",
+      tema: "Videojuegos y Mundo Gamer",
+      definicion: "Aspecto visual, ropa o diseño estético con el que se puede personalizar la apariencia de un personaje o un arma en los videojuegos sin cambiar sus funciones.",
+      ejemplo: "«Consiguió una skin dorada para su pistola favorita tras completar un reto difícil.»"
+    },
+    {
+      palabra: "Smishing",
+      tema: "Seguridad y Tecnología",
+      definicion: "Variante de estafa digital similar al phishing, pero que se lleva a cabo enviando mensajes de texto fraudulentos (SMS) al teléfono móvil en lugar de correos.",
+      ejemplo: "«Me mandaron un SMS diciendo que mi paquete estaba retenido; era smishing puro y duro.»"
+    },
+    {
+      palabra: "Spam",
+      tema: "Seguridad y Tecnología",
+      definicion: "Correo electrónico basura o mensajes publicitarios masivos y no deseados que llenan la bandeja de entrada sin que el usuario se haya suscrito.",
+      ejemplo: "«Revisé la carpeta de spam del correo y encontré un mensaje publicitario que no me interesaba.»"
     },
     {
       palabra: "Spoiler",
       tema: "Series y cine",
-      definicion: "Es contar lo que pasa en una película, serie o libro a alguien que todavía no lo ha visto, estropeándole la sorpresa. Viene del inglés «to spoil», que significa «estropear».",
-      ejemplo: "«¡No me hagas spoiler! Todavía no he visto el final de la serie.»"
+      definicion: "Revelación anticipada de un detalle importante de una película, serie o libro que arruina la sorpresa a quienes todavía no lo han visto o leído.",
+      ejemplo: "«¡No me cuentes el final de la serie! Guárdate el spoiler para cuando la termine.»"
+    },
+    {
+      palabra: "Stalkear",
+      tema: "Redes sociales e Internet",
+      definicion: "Investigar, examinar o cotillear en profundidad los perfiles de redes sociales y publicaciones pasadas de otra persona sin que esta se dé cuenta.",
+      ejemplo: "«Estuvo stalkeando las fotos antiguas de su compañero de clase en Instagram.»"
+    },
+    {
+      palabra: "Sticker",
+      tema: "Móvil y ordenador",
+      definicion: "Pegatina digital, imagen recortada o dibujo animado divertido que se envía fácilmente a través de aplicaciones de mensajería instantánea.",
+      ejemplo: "«Me mandó un sticker de un gato con gafas de sol que me hizo mucha gracia.»"
     },
     {
       palabra: "Streaming",
       tema: "Series y cine",
-      definicion: "Es ver una película, escuchar música o seguir un directo por internet en el momento, sin tener que descargarlo antes. Es como abrir el grifo: el contenido llega mientras usted lo disfruta.",
-      ejemplo: "«Vemos las películas por streaming en la tele, sin comprar ningún DVD.»"
+      definicion: "Tecnología para ver películas, escuchar música o seguir retransmisiones por internet al instante, sin necesidad de descargar archivos previos al ordenador.",
+      ejemplo: "«Vemos las series favoritas de los viernes por streaming directamente en la televisión.»"
+    },
+    {
+      palabra: "Troll",
+      tema: "Redes sociales e Internet",
+      definicion: "Usuario que entra en foros, redes sociales o chats exclusivamente para provocar enfados, insultar o desviar la atención con comentarios absurdos.",
+      ejemplo: "«Un troll entró en el directo del debate a poner faltas de respeto y lo bloquearon.»"
     },
     {
       palabra: "Videollamada",
       tema: "Móvil y ordenador",
-      definicion: "Es una llamada en la que, además de oír, también se ve a la otra persona por la pantalla. Sirve para hablar con la familia que vive lejos como si estuvieran en el salón.",
-      ejemplo: "«Todos los domingos hago una videollamada con mis nietos para verles la cara.»"
+      definicion: "Llamada telefónica a través de internet que permite conversar mientras se ve en directo la imagen de la otra persona en la pantalla del dispositivo.",
+      ejemplo: "«Hago una videollamada cada domingo con mis nietos para ver cómo han crecido.»"
+    },
+    {
+      palabra: "Viral",
+      tema: "Redes sociales e Internet",
+      definicion: "Contenido digital (vídeo, foto o frase) que se comparte de forma masiva por miles de usuarios y alcanza una popularidad enorme en pocos días.",
+      ejemplo: "«El vídeo del perro rescatado se volvió viral y lo vieron millones de personas en internet.»"
+    },
+    {
+      palabra: "VPN",
+      tema: "Seguridad y Tecnología",
+      definicion: "Herramienta de seguridad que crea una red privada virtual para navegar por internet ocultando la dirección IP real y protegiendo los datos personales.",
+      ejemplo: "«Conectó una VPN en el ordenador del hotel para navegar de forma más segura fuera de casa.»"
     },
     {
       palabra: "Wifi",
       tema: "Internet",
-      definicion: "Es la conexión a internet sin cables. Un aparato en casa (el router) la reparte por el aire y el móvil, la tableta o la tele se conectan con una contraseña. Si usa wifi, no gasta los datos de su tarifa del móvil.",
-      ejemplo: "«Conecta el móvil al wifi de casa para ver vídeos sin gastar datos.»"
+      definicion: "Sistema de conexión inalámbrica que permite conectar aparatos como móviles, ordenadores o televisiones a internet sin necesidad de cables.",
+      ejemplo: "«Introduce la contraseña del wifi en la tablet para poder ver los vídeos sin gastar datos.»"
+    },
+    {
+      palabra: "Worm (Gusano)",
+      tema: "Seguridad y Tecnología",
+      definicion: "Tipo de virus informático diseñado para multiplicarse de manera autónoma y viajar de un ordenador a otro aprovechándose de fallos en las redes.",
+      ejemplo: "«El sistema de seguridad detectó un gusano intentando entrar en la red y lo neutralizó.»"
     }
   ];
 
@@ -325,7 +612,6 @@
   const buscador = document.getElementById("buscador");
   const contador = document.getElementById("contador");
 
-  // Quita tildes y mayúsculas para que «cringe», «Cringe» o «CRINGE» funcionen igual
   const normalizar = (t) => t.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase().trim();
 
   const ordenados = terminos.slice().sort((a, b) => a.palabra.localeCompare(b.palabra, "es"));
@@ -383,7 +669,6 @@
       li.hidden = !coincide;
       if (coincide) visibles++;
     });
-    // Se abre sola la tarjeta si la palabra coincide o si solo hay un resultado
     tarjetas.forEach((li) => {
       li.firstChild.open = !li.hidden && (li._palabra.includes(q) || visibles === 1);
     });
@@ -406,7 +691,6 @@
     buscador.focus();
   });
 
-  // Tamaño de letra ajustable
   let tam = 20;
   const raiz = document.documentElement;
   function cambiarTam(delta) {
@@ -416,7 +700,6 @@
   document.getElementById("mas").addEventListener("click", () => cambiarTam(2));
   document.getElementById("menos").addEventListener("click", () => cambiarTam(-2));
 
-  // ====== Palabras del momento: 3 al azar, cambian solas y con el botón ======
   function mostrarTendencias() {
     const nuevas = ordenados
       .filter((t) => !actuales.includes(t.palabra))
@@ -439,7 +722,6 @@
     }));
   }
 
-  // El cambio automático se detiene si la persona tiene el cursor o el foco encima
   let pausa = false;
   ["mouseenter", "focusin"].forEach((e) => tendencias.addEventListener(e, () => { pausa = true; }));
   ["mouseleave", "focusout"].forEach((e) => tendencias.addEventListener(e, () => { pausa = false; }));
