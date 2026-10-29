@@ -1,15 +1,14 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-<meta name="google-site-verification" content="0-9yU5filWc6hjiEvhBLQdo5eB0q31N9IW_iuh-ljB8" />
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>El Diccionario de la Era Digital para Todos</title>
 <meta name="description" content="Palabras de la tecnología explicadas de forma sencilla, con ejemplos de la vida diaria.">
 <style>
   :root {
-    --fondo: #fff4f2;
-    --barra: rgba(255, 244, 242, .94);
+    --fondo: #f5f8ff;
+    --barra: rgba(245, 248, 255, .92);
     --punto: rgba(236, 128, 150, .22);
     --punto2: rgba(10, 92, 143, .16);
     --superficie: #ffffff;
@@ -169,25 +168,24 @@
     border: 3px solid var(--acento); border-radius: 999px;
     cursor: pointer;
   }
-  body { background: linear-gradient(160deg, #fff1f3, #eff5ff 50%, #eefaf2) fixed; padding-bottom: 4rem; }
+  /* Fondo: degradado suave con formas de colores (vivos y suaves) que flotan despacio */
+  body { background: linear-gradient(160deg, #f5f8ff, #fdf8f3 55%, #f1fbf7) fixed; padding-bottom: 4rem; }
+  .formas { position: fixed; inset: 0; z-index: -1; overflow: hidden; pointer-events: none; }
+  .formas i { position: absolute; display: block; filter: blur(4px); }
+  .formas i:nth-child(1) { width: 38vmax; height: 38vmax; left: -12vmax; top: -10vmax; background: #7c5cff; opacity: .30; border-radius: 63% 37% 54% 46% / 55% 48% 52% 45%; animation: flota1 34s ease-in-out infinite alternate; }
+  .formas i:nth-child(2) { width: 30vmax; height: 30vmax; right: -8vmax; top: 8vmax; background: #ffb3c7; opacity: .55; border-radius: 40% 60% 70% 30% / 40% 50% 60% 50%; animation: flota2 42s ease-in-out infinite alternate; }
+  .formas i:nth-child(3) { width: 34vmax; height: 34vmax; left: 8vmax; bottom: -14vmax; background: #1fc7a8; opacity: .28; border-radius: 50% 50% 35% 65% / 60% 40% 60% 40%; animation: flota3 38s ease-in-out infinite alternate; }
+  .formas i:nth-child(4) { width: 22vmax; height: 22vmax; right: 6vmax; bottom: 2vmax; background: #ffb45e; opacity: .40; border-radius: 58% 42% 46% 54% / 46% 58% 42% 54%; animation: flota4 30s ease-in-out infinite alternate; }
+  .formas i:nth-child(5) { width: 18vmax; height: 18vmax; left: 38%; top: 30%; background: #a7d8ff; opacity: .50; border-radius: 50%; animation: flota2 46s ease-in-out infinite alternate-reverse; }
   @media (prefers-color-scheme: dark) {
-    body { background: linear-gradient(160deg, #141a26, #1b2036 50%, #14242b) fixed; }
+    body { background: linear-gradient(160deg, #0e1523, #151a30 55%, #0f2224) fixed; }
+    .formas i { opacity: .26 !important; }
   }
-  body::before {
-    content: "";
-    position: fixed; inset: 0; z-index: -1; pointer-events: none;
-    background-image:
-      radial-gradient(circle, var(--punto) 3px, transparent 3.5px),
-      radial-gradient(circle, var(--punto2) 2.5px, transparent 3px);
-    background-size: 64px 64px, 64px 64px;
-    background-position: 0 0, 32px 32px;
-  }
-  @media (prefers-reduced-motion: no-preference) {
-    body::before { animation: mover 90s linear infinite; }
-  }
-  @keyframes mover {
-    to { background-position: 64px 64px, 96px 96px; }
-  }
+  @keyframes flota1 { to { transform: translate(14vmax, 10vmax) rotate(40deg) scale(1.12); } }
+  @keyframes flota2 { to { transform: translate(-12vmax, 14vmax) rotate(-35deg) scale(.9); } }
+  @keyframes flota3 { to { transform: translate(12vmax, -10vmax) rotate(30deg) scale(1.1); } }
+  @keyframes flota4 { to { transform: translate(-10vmax, -12vmax) rotate(-45deg) scale(1.15); } }
+  @media (prefers-reduced-motion: reduce) { .formas i { animation: none !important; } }
   footer { max-width: 46rem; margin: 0 auto; padding: 1rem 1.25rem 2rem; }
   .contacto {
     background: var(--superficie);
@@ -229,6 +227,7 @@
 </style>
 </head>
 <body>
+<div class="formas" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></div>
 <a class="saltar" href="#resultados">Saltar a las palabras</a>
 
 <header>
@@ -914,7 +913,72 @@
     ["Streamer","vid","Persona que juega o charla en directo por internet mientras otros la ven.","«Mi nieto ve a un streamer que juega y cuenta chistes.»","Directo (Streaming),Hype,Influencer"],
     ["Postureo","jerga","Presumir o aparentar algo solo para que lo vean los demás, sobre todo en redes.","«Esa foto en un coche de lujo alquilado es puro postureo.»","Influencer,Filtro,Flexear"],
     ["Quedada","jerga","Encuentro acordado con amigos o con gente de internet para verse en persona.","«Hicimos una quedada del grupo de senderismo en el parque.»","Grupo de chat,WhatsApp,Random"],
-    ["Podcast","otros","Programa de audio, como una radio, que se escucha cuando uno quiere desde el móvil.","«Escucho un podcast de historia mientras cocino.»","Streaming,App,Suscripción"]
+    ["Podcast","otros","Programa de audio, como una radio, que se escucha cuando uno quiere desde el móvil.","«Escucho un podcast de historia mientras cocino.»","Streaming,App,Suscripción"],
+    ["Navegador","mov","Programa para ver páginas de internet, como Chrome, Edge o Safari.","«Abro el navegador para mirar el tiempo.»","Buscador,Enlace,Pestaña"],
+    ["Buscador","mov","Página que encuentra información en internet cuando se escribe una pregunta, como Google.","«Escribí la receta en el buscador y salieron mil.»","Navegador,Enlace,Inteligencia artificial"],
+    ["Enlace","mov","Texto o botón que, al pulsarlo, lleva a otra página de internet. También se llama «link».","«Me mandó el enlace de la cita por WhatsApp.»","Navegador,Phishing,Código QR"],
+    ["Pestaña","mov","Cada página abierta a la vez en el navegador, como las hojas de una carpeta.","«Tengo cinco pestañas abiertas y me pierdo.»","Navegador,Buscador,Enlace"],
+    ["Memoria USB","mov","Aparato pequeño para guardar y llevar archivos de un ordenador a otro. También se llama «pendrive».","«Guardé las fotos en una memoria USB.»","Copia de seguridad,Disco SSD,Nube"],
+    ["Tableta","mov","Aparato de pantalla grande y táctil, a medio camino entre el móvil y el ordenador.","«Leo el periódico en la tableta.»","Pantalla táctil,App,Wifi"],
+    ["Smartwatch","mov","Reloj conectado al móvil que muestra avisos y mide pasos o pulsaciones.","«Mi reloj inteligente me avisa de que camine.»","Bluetooth,Notificación,App"],
+    ["Auriculares inalámbricos","mov","Auriculares sin cable que se conectan al móvil por Bluetooth.","«Escucho música con auriculares inalámbricos.»","Bluetooth,Cargador inalámbrico,Podcast"],
+    ["Modo oscuro","mov","Ajuste que pone la pantalla con fondo negro y letras claras, más cómodo de noche.","«Activé el modo oscuro para leer en la cama.»","Pantalla táctil,Ajustes,App"],
+    ["Ventana emergente","mov","Cuadro que salta de repente en la pantalla al visitar una web. A veces es publicidad o un engaño.","«Salió una ventana emergente y la cerré sin pulsar.»","Spam,Phishing,Navegador"],
+    ["Correo electrónico","mov","Carta que se escribe y se recibe por internet, con una dirección con arroba (@).","«Le envié el recibo por correo electrónico.»","Spam,Phishing,Archivo adjunto"],
+    ["Zona wifi","mov","Función del móvil que comparte su internet con otro aparato, como una tableta.","«Compartí mi internet con la tableta con la zona wifi.»","Datos móviles,Wifi,Router"],
+    ["NFC","mov","Tecnología que permite pagar o conectar aparatos acercándolos, sin cables.","«Pagué acercando el móvil, con NFC.»","Pago móvil,Tarjeta contactless,Bluetooth"],
+    ["GPS","mov","Sistema que sabe dónde está usted gracias a satélites y le guía en mapas.","«Puse el GPS para llegar al hospital.»","App,Datos móviles,Modo avión"],
+    ["Realidad virtual","mov","Gafas con pantalla que hacen sentir que uno está dentro de otro lugar.","«Con las gafas de realidad virtual visité un museo.»","Videojuegos,Avatar,Streaming"],
+    ["Perfil","red","Página personal en una red social, con foto, nombre y lo que ha publicado.","«Puse mi perfil en privado.»","Seguidor,Avatar,Post"],
+    ["Selfi","red","Foto que uno se hace a sí mismo con el móvil.","«Nos hicimos un selfi en la boda.»","Filtro,Story (Historia),Post"],
+    ["Mensaje directo","red","Mensaje privado que solo ve la persona que lo recibe en una red social. Se abrevia «DM».","«Le escribí un mensaje directo para felicitarla.»","WhatsApp,Perfil,Bloquear"],
+    ["Nota de voz","red","Mensaje de audio que se graba y se envía, en vez de escribirlo.","«Mi hija me mandó una nota de voz.»","WhatsApp,Grupo de chat,Videollamada"],
+    ["Comentario","red","Texto que se escribe debajo de una publicación para opinar sobre ella.","«Dejé un comentario en la foto de mi nieto.»","Post,Like,Hater"],
+    ["Compartir","red","Reenviar una publicación o un archivo a otras personas.","«Compartí la receta con mis amigas.»","Viral,Fake news,Grupo de chat"],
+    ["Cuenta verificada","red","Perfil con una marca que indica que pertenece de verdad a la persona o empresa.","«El perfil del ayuntamiento tiene la marca de cuenta verificada.»","Perfil,Suplantación de identidad,Influencer"],
+    ["Trending","red","Lo que más se comenta en un momento en una red social. Significa «tendencia».","«El baile salió en trending y todos lo vieron.»","Viral,Hashtag,Meme"],
+    ["Datáfono","din","Aparato de las tiendas donde se acerca o se mete la tarjeta para pagar.","«Acerqué la tarjeta al datáfono.»","Tarjeta contactless,PIN,Pago móvil"],
+    ["CVV","din","Código de tres cifras detrás de la tarjeta, para comprar por internet. No debe compartirse.","«La web me pidió el CVV de la tarjeta.»","PIN,Compra online,Phishing"],
+    ["Transferencia","din","Envío de dinero de una cuenta del banco a otra.","«Hice una transferencia para pagar el alquiler.»","Bizum,Banca online,Phishing"],
+    ["Cartera digital","din","App del móvil donde se guardan tarjetas, billetes y entradas para pagar sin cartera.","«Guardé mi billete de tren en la cartera digital.»","Pago móvil,NFC,Código QR"],
+    ["Carrito de compra","din","Lista de lo que se quiere comprar en una tienda online antes de pagar.","«Metí dos camisas en el carrito de compra.»","Compra online,Reseña,Reembolso"],
+    ["Cupón digital","din","Código que da descuento al comprar por internet.","«Escribí el cupón digital y me rebajaron cinco euros.»","Compra online,Suscripción,Spam"],
+    ["Reembolso","din","Devolución del dinero de una compra que no le ha convencido.","«Devolví las zapatillas y me hicieron el reembolso.»","Compra online,Transferencia,Reseña"],
+    ["Factura electrónica","din","Factura que llega por correo o por una app, sin papel.","«Recibí la factura de la luz por correo.»","Correo electrónico,Banca online,Descargar"],
+    ["Captcha","seg","Prueba, como marcar fotos de semáforos, que demuestra que quien entra es una persona y no un robot.","«Tuve que marcar los coches en un captcha.»","Bot,Contraseña,Spam"],
+    ["Navegación privada","seg","Modo del navegador que no guarda el historial de esa sesión. Se llama también «incógnito».","«Busqué el regalo en modo incógnito para que fuera sorpresa.»","Navegador,Cookie,VPN"],
+    ["Gestor de contraseñas","seg","Programa que guarda todas sus claves y las recuerda por usted.","«Un gestor de contraseñas guarda mis claves.»","Contraseña,Cifrado,Autenticación en dos pasos (2FA)"],
+    ["HTTPS","seg","Candadito junto a la dirección de una web que indica que la conexión es protegida.","«Comprobé que la tienda tenía HTTPS antes de pagar.»","Certificado SSL,Cifrado,Compra online"],
+    ["Bot","seg","Programa automático que hace tareas solo, como enviar mensajes falsos masivos.","«Muchos de esos comentarios eran bots.»","Spam,Captcha,Chatbot"],
+    ["Hacker","seg","Persona experta en informática que entra en sistemas ajenos, a veces para robar y a veces para proteger.","«Un hacker accedió a la cuenta de la empresa.»","Ciberataque,Malware,Phishing"],
+    ["Ingeniería social","seg","Engaño que busca que usted mismo entregue sus claves, usando la confianza o el miedo.","«Me llamaron diciendo ser del banco: era ingeniería social.»","Vishing,Suplantación de identidad,Phishing"],
+    ["Permisos de la app","seg","Autorizaciones que se da a una app para usar cámara, micrófono o ubicación. Conviene darlas solo si hacen falta.","«Quité el permiso del micrófono a esa app.»","App,GPS,Spyware"],
+    ["Certificado digital","seg","Archivo que le identifica en internet para hacer trámites oficiales, como una firma segura.","«Con el certificado digital presenté la declaración.»","DNI electrónico,Cl@ve (Clave),Cifrado"],
+    ["Cl@ve (Clave)","seg","Sistema para identificarse en las gestiones con la Administración desde el móvil o el ordenador.","«Entré con Cl@ve para pedir el certificado.»","Certificado digital,DNI electrónico,Contraseña"],
+    ["Aprendizaje automático","ia","Forma de enseñar a un ordenador con muchos ejemplos, para que aprenda solo a reconocer cosas.","«Gracias al aprendizaje automático, el móvil reconoce mis fotos.»","Inteligencia artificial,Algoritmo,Reconocimiento facial"],
+    ["Dictado por voz","ia","Función que escribe lo que usted dice en voz alta.","«Escribí el mensaje con el dictado por voz.»","Asistente virtual,WhatsApp,Inteligencia artificial"],
+    ["Termostato inteligente","casa","Control de la calefacción que se maneja desde el móvil.","«Subí la calefacción desde el móvil.»","Domótica,App,Wifi"],
+    ["Bombilla inteligente","casa","Bombilla que se enciende y cambia de color con el móvil o la voz.","«Le dije a la bombilla que bajara la luz.»","Domótica,Altavoz inteligente,Enchufe inteligente"],
+    ["Videoportero","casa","Timbre con cámara para ver quién llama sin abrir la puerta.","«Vi al cartero por el videoportero.»","Domótica,Notificación,Cámara de vigilancia"],
+    ["Cámara de vigilancia","casa","Cámara conectada a internet que deja ver la casa desde el móvil.","«Miré a mi gato por la cámara de vigilancia.»","Videoportero,Wifi,Notificación"],
+    ["Repetidor wifi","casa","Aparato que alarga el alcance del wifi hasta las habitaciones lejanas.","«Con el repetidor wifi ya hay cobertura en el patio.»","Router,Wifi,Fibra óptica"],
+    ["Placa de inducción","casa","Cocina lisa de cristal que calienta solo la olla, no la superficie.","«La placa de inducción hierve el agua muy rápido.»","Domótica,Freidora de aire,Smart TV"],
+    ["Freidora de aire","casa","Aparato que cocina con aire muy caliente y casi sin aceite. También se llama «airfryer».","«Hice las patatas en la freidora de aire.»","Placa de inducción,Domótica,Smart TV"],
+    ["Gamer","vid","Persona a la que le gusta jugar a videojuegos con frecuencia.","«Mi nieto es un gamer de fin de semana.»","Streamer,Noob,Joystick"],
+    ["Consola","vid","Aparato que se conecta a la tele para jugar a videojuegos.","«Le regalé una consola por su cumpleaños.»","Joystick,Gamer,Smart TV"],
+    ["Multijugador","vid","Modo de juego en el que juegan varias personas a la vez, juntas o por internet.","«Jugamos en multijugador con mis primos.»","Lag,Streamer,Main"],
+    ["Microtransacción","vid","Pequeño pago dentro de un juego para conseguir objetos o ventajas.","«Gastó cinco euros en una microtransacción.»","Pay-to-win,Skin,DLC"],
+    ["Crush","jerga","Persona que a uno le gusta de forma romántica y en secreto.","«Mi crush me dio un like.»","Shippear,Simp,Stalkear"],
+    ["Fandom","jerga","Grupo de fans de una serie, un cantante o un juego.","«El fandom de esa serie hizo una quedada.»","Hype,Quedada,Lore"],
+    ["Cancelar","jerga","Rechazar en masa en las redes a alguien por algo que dijo o hizo.","«Lo cancelaron por un mensaje antiguo.»","Hater,Troll,Baneo"],
+    ["Audiolibro","otros","Libro leído en voz alta que se escucha desde el móvil.","«Escucho un audiolibro mientras cocino.»","Podcast,App,Suscripción"],
+    ["Lista de reproducción","otros","Conjunto de canciones o vídeos ordenados para escucharlos seguidos.","«Armé una lista de reproducción de boleros.»","Podcast,Streaming,App"],
+    ["Teletrabajo","otros","Trabajar desde casa con ordenador e internet, sin ir a la oficina.","«Hago teletrabajo dos días por semana.»","Videollamada,Wifi,Nube"],
+    ["Cita previa online","otros","Reserva de hora por internet para un trámite o consulta, sin hacer cola.","«Pedí cita previa online en el centro de salud.»","Certificado digital,Cl@ve (Clave),App"],
+    ["Receta electrónica","otros","Receta médica que no va en papel: la farmacia la ve en su tarjeta sanitaria.","«Con la receta electrónica recogí el medicamento sin papeles.»","Telemedicina,Tarjeta contactless,App"],
+    ["Telemedicina","otros","Consulta con el médico por teléfono o videollamada, sin ir a la consulta.","«El médico me atendió por videollamada.»","Videollamada,Receta electrónica,Cita previa online"],
+    ["Archivo adjunto","mov","Archivo, como una foto o un PDF, que se envía junto con un correo.","«Le mandé el recibo como archivo adjunto.»","Correo electrónico,Descargar,Spam"],
+    ["Ajustes","mov","Sección del móvil donde se cambian opciones, como el sonido, el brillo o el wifi.","«Subí el tamaño de letra en Ajustes.»","App,Modo oscuro,Actualización"]
   ];
 
   const lista = document.getElementById("lista");
@@ -1126,9 +1190,6 @@
 
   mostrarTendencias();
   render();
-</script>
-</body>
-</html>
 </script>
 </body>
 </html>
